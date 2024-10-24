@@ -1,0 +1,1 @@
+export type ToolbarType = 'default' | 'standard' | 'textOnly' | 'minimal' | 'titleText' | 'unalignedTextOnly';

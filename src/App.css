@@ -1,0 +1,10 @@
+@import "../node_modules/react-quill-new/dist/quill.snow.css";
+body,
+html,
+#root {
+    width: 100%;
+}
+
+.ql-editor {
+    min-height: 180px;
+}
