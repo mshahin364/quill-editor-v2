@@ -1,50 +1,35 @@
-import {
-  forwardRef,
-  memo,
-  Ref,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-  useState,
-  // useState
-} from "react";
+import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef,} from "react";
 // import {Sources} from 'quill';
 // import ReactQuill, {Quill, Range, UnprivilegedEditor} from 'react-quill-new';
 // import ReactQuill, {Quill, EmitterSource,} from 'react-quill-new';
 import ReactQuill from "react-quill-new";
-import Quill, { type EmitterSource, type Range as RangeStatic } from "quill";
+import Quill, {type EmitterSource, type Range as RangeStatic} from "quill";
 import QuillMarkdown from "./quill-markdown/QuillMarkdown";
 // import 'quill-emoji/dist/quill-emoji';
 // import 'quill-mention';
-import QuillImageDropAndPaste, { ImageData } from "quill-image-drop-and-paste";
+import QuillImageDropAndPaste, {ImageData} from "quill-image-drop-and-paste";
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
-import { RemainingCharactersModule } from "./modules/RemainingCharactersModule";
-import {
-  HEADER_SIZE_LIST,
-  HEADER_SIZE_LIST_CUSTOM,
-  IdeascaleSnowTheme,
-} from "./themes/IdeascaleSnowTheme";
-import { VideoBlot } from "./blots/VideoBlot";
-import { ImageBlot } from "./blots/ImageBlot";
-import { LinkBlot } from "./blots/LinkBlot";
-import { MarkdownShortcutsModule } from "./modules/MarkdownShortcutsModule";
-import { MaxCharsLimitModule } from "./modules/MaxCharsLimitModule";
-import { VideoPasteModule } from "./modules/VideoPasteModule";
-import { HtmlConverter } from "./utils/HtmlConverter";
-import { RichTextEditorHelper } from "./utils/RichTextEditorHelper";
-import { UploadProgressCallback } from "./UploadProgressCallback";
-import { UploadedResponse } from "./UploadResponse";
+import {RemainingCharactersModule} from "./modules/RemainingCharactersModule";
+import {HEADER_SIZE_LIST, HEADER_SIZE_LIST_CUSTOM, IdeascaleSnowTheme,} from "./themes/IdeascaleSnowTheme";
+import {VideoBlot} from "./blots/VideoBlot";
+import {ImageBlot} from "./blots/ImageBlot";
+import {LinkBlot} from "./blots/LinkBlot";
+import {MarkdownShortcutsModule} from "./modules/MarkdownShortcutsModule";
+import {MaxCharsLimitModule} from "./modules/MaxCharsLimitModule";
+import {VideoPasteModule} from "./modules/VideoPasteModule";
+import {HtmlConverter} from "./utils/HtmlConverter";
+import {RichTextEditorHelper} from "./utils/RichTextEditorHelper";
+import {UploadProgressCallback} from "./UploadProgressCallback";
+import {UploadedResponse} from "./UploadResponse";
 // import {ImageUploadAndLinkModal} from './ImageUploadAndLinkModal';
 import QuillResize from "./quill-resize-module/QuillResize";
-import { ImagePasteModule } from "./modules/ImagePasteModule";
+import {ImagePasteModule} from "./modules/ImagePasteModule";
 // import emojiList from './emojiList.json';
-import { ClassificationBlot } from "./blots/ClassificationBlot";
-import { ClassificationModule } from "./modules/ClassificationModule";
-import { RichTextClassificationConfig } from "./RichTextClassificationConfig";
-import { ToolbarType } from "./ToolbarType";
+import {ClassificationBlot} from "./blots/ClassificationBlot";
+import {ClassificationModule} from "./modules/ClassificationModule";
+import {RichTextClassificationConfig} from "./RichTextClassificationConfig";
+import {ToolbarType} from "./ToolbarType";
 import type DeltaStatic from "quill-delta";
 
 interface UnprivilegedEditor {
@@ -941,7 +926,7 @@ export const NewRichTextEditor2 = memo(
         emojiPopupPosition();
       }, []);
 
-      const [value, setValue] = useState("");
+      // const [value, setValue] = useState("");
 
       return (
         <section
