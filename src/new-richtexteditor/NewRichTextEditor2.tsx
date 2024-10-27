@@ -31,6 +31,7 @@ import {ClassificationModule} from "./modules/ClassificationModule";
 import {RichTextClassificationConfig} from "./RichTextClassificationConfig";
 import {ToolbarType} from "./ToolbarType";
 import type DeltaStatic from "quill-delta";
+import {EmojiModule} from "./emoji-mart/emoji-module.ts";
 
 interface UnprivilegedEditor {
   getLength: Quill["getLength"];
@@ -95,6 +96,7 @@ Quill.register(
   ClassificationBlot,
   true,
 );
+Quill.register("modules/EmojiModule", EmojiModule, true);
 
 const TOOLBAR_CONFIGURATIONS = {
   default: [
@@ -115,6 +117,7 @@ const TOOLBAR_CONFIGURATIONS = {
     "link",
     "video",
     "image",
+    "emoji"
   ],
   standard: [
     "bold",
@@ -133,6 +136,7 @@ const TOOLBAR_CONFIGURATIONS = {
     "link",
     "video",
     "image",
+      "emoji"
   ],
   textOnly: [
     { header: HEADER_SIZE_LIST },
@@ -166,6 +170,7 @@ const TOOLBAR_CONFIGURATIONS = {
     { align: "justify" },
     "blockquote",
     "link",
+    "emoji"
   ],
   titleText: [
     { header: HEADER_SIZE_LIST_CUSTOM },
@@ -278,7 +283,7 @@ export const NewRichTextEditor2 = memo(
         ariaLabelledBy = "",
         placeholder = "Enter text",
         maxCharacterLimit = Infinity,
-        toolbar = "minimal",
+        toolbar = "default",
         enableEmojiPicker = false,
         enableAtMention = false,
         offensiveEmojis = [],
@@ -633,6 +638,8 @@ export const NewRichTextEditor2 = memo(
           resize: {
             modules: ["Resize", "DisplaySize"],
           },
+          // emoji: true,
+          EmojiModule: true,
         }),
         [
           characterLeftLabel,
