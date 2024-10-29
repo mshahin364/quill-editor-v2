@@ -1,11 +1,12 @@
-import Quill from 'quill';
+import  {Parchment} from 'quill';
 import DefaultOptions from './DefaultOptions';
 import DisplaySize from './modules/DisplaySize';
 import Toolbar from './modules/Toolbar';
 import Resize from './modules/Resize';
 import Keyboard from './modules/Keyboard';
+// import {Parchment} from "quill";
 
-const Parchment = Quill.import('parchment') as any;
+// const Parchment = Quill.import('parchment') as any;
 
 const knownModules: any = {DisplaySize, Toolbar, Resize, Keyboard};
 
@@ -279,7 +280,7 @@ export default class QuillResize {
 			this.selectedBlots = [];
 			return;
 		}
-		const leaves = this.quill.scroll.descendants(Parchment.Leaf, range.index, range.length);
+		const leaves = this.quill.scroll?.descendants(Parchment.LeafBlot, range.index, range.length);
 		const blots = leaves.filter((blot: any) => {
 			const canBeHandle = !!this.options.parchment[blot.statics.blotName];
 			if (canBeHandle) blot.domNode.classList.add(this.options.selectedClass);

@@ -12,6 +12,7 @@
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
     "emoji-mart": "^5.6.0",
+    "fuse.js": "^7.0.0",
     "lodash": "^4.17.21",
     "quill": "2.0.2",
     "quill-image-drop-and-paste": "^2.0.1",

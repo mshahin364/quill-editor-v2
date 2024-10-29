@@ -2,9 +2,12 @@ import { useCallback, useRef, useState} from "react";
 // import ReactQuill from "react-quill-new";
 // import svgIconPath from '@ideascale/ui/dist/assets/icons/is-icon-defs.svg';
 // import {HtmlConverter, NewRichTextEditor, RichTextEditorHandler} from "./new-richtexteditor";
-import {HtmlConverter, NewRichTextEditor2, RichTextEditorHandler} from "./new-richtexteditor";
+// import {HtmlConverter, NewRichTextEditor2, RichTextEditorHandler} from "./new-richtexteditor";
 // import {User} from "./new-richtexteditor/NewRichTextEditor.tsx";
-import {User} from "./new-richtexteditor/NewRichTextEditor2.tsx";
+import {NewRichTextEditor} from "./new-richtexteditor/NewRichTextEditor.tsx";
+import {MentionUser} from "./new-richtexteditor/MentionUser.ts";
+import {RichTextEditorHandler} from "./new-richtexteditor/RichTextEditorHandler.ts";
+import {HtmlConverter} from "./new-richtexteditor";
 
 // import {HtmlUtils} from "@ideascale/commons";
 // import 'react-quill-new/dist/quill.snow.css';
@@ -120,7 +123,7 @@ export const RichTextEditor = () => {
     // const [renderedFormat, setRenderedFormat] = useState('');
 
     const suggestPeople = useCallback(async (searchTerm: string) => {
-        return ALL_SUGGESTED_PEOPLES.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())) as User[];
+        return ALL_SUGGESTED_PEOPLES.filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase())) as MentionUser[];
     }, []);
 
     const onChange = useCallback((value: string) => htmlContentRef.current = value, []);
@@ -160,24 +163,50 @@ export const RichTextEditor = () => {
     }, []);
 
     return (
-        <section style={{display: 'flex', justifyContent:'center', alignItems:'center', width: '100%', flexDirection: 'column'}}>
+        <section style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            flexDirection: 'column'
+        }}>
+            NewRichTextEditor:
 
-        <NewRichTextEditor2
-            id={'description'}
-            placeholder={'Enter description'}
-            toolbar={'default'}
-            svgIconPath={''}
-            enableEmojiPicker={true}
-            enableAtMention={true}
-            maxCharacterLimit={1000}
-            characterLeftLabel={'Remaining'}
-            fetchMentionUsers={suggestPeople}
-            onChange={onChange}
-            existingAttachments={[]}
-            defaultValue={''}
-            ref={quillRef}
-            uploadImage={tempImageUpload}
-        />
+            <NewRichTextEditor
+                id={'description'}
+                placeholder={'Enter description'}
+                toolbar={'default'}
+                svgIconPath={''}
+                enableEmojiPicker={true}
+                enableAtMention={true}
+                maxCharacterLimit={1000}
+                characterLeftLabel={'Remaining'}
+                fetchMentionUsers={suggestPeople}
+                onChange={onChange}
+                existingAttachments={[]}
+                defaultValue={''}
+                ref={quillRef}
+                uploadImage={tempImageUpload}
+            />
+            <br/><br/><br/><br/><br/>
+            NewRichTextEditor2:
+            {/*<NewRichTextEditor2*/}
+            {/*    id={'description'}*/}
+            {/*    placeholder={'Enter description'}*/}
+            {/*    toolbar={'default'}*/}
+            {/*    svgIconPath={''}*/}
+            {/*    enableEmojiPicker={true}*/}
+            {/*    enableAtMention={true}*/}
+            {/*    maxCharacterLimit={1000}*/}
+            {/*    characterLeftLabel={'Remaining'}*/}
+            {/*    fetchMentionUsers={suggestPeople}*/}
+            {/*    onChange={onChange}*/}
+            {/*    existingAttachments={[]}*/}
+            {/*    defaultValue={''}*/}
+            {/*    ref={quillRef}*/}
+            {/*    uploadImage={tempImageUpload}*/}
+            {/*/>*/}
+
 
             {
                 <>

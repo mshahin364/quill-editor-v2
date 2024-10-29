@@ -1,19 +1,9 @@
-import {
-    forwardRef,
-    memo,
-    Ref,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useMemo,
-    useRef, useState,
-    // useState
-} from 'react';
+import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef,} from 'react';
 // import {Sources} from 'quill';
 // import ReactQuill, {Quill, Range, UnprivilegedEditor} from 'react-quill-new';
 // import ReactQuill, {Quill, EmitterSource,} from 'react-quill-new';
 import ReactQuill from 'react-quill-new';
-import Quill, { type EmitterSource, type Range as RangeStatic } from 'quill';
+import Quill, {type EmitterSource, type Range as RangeStatic} from 'quill';
 import QuillMarkdown from './quill-markdown/QuillMarkdown';
 // import 'quill-emoji/dist/quill-emoji';
 // import 'quill-mention';
@@ -35,12 +25,22 @@ import {UploadedResponse} from './UploadResponse';
 // import {ImageUploadAndLinkModal} from './ImageUploadAndLinkModal';
 import QuillResize from './quill-resize-module/QuillResize';
 import {ImagePasteModule} from './modules/ImagePasteModule';
-// import emojiList from './emojiList.json';
+import emojiList from './emojiList.json';
 import {ClassificationBlot} from './blots/ClassificationBlot';
 import {ClassificationModule} from './modules/ClassificationModule';
 import {RichTextClassificationConfig} from './RichTextClassificationConfig';
 import {ToolbarType} from './ToolbarType';
 import type DeltaStatic from 'quill-delta';
+
+//Emoji Picker
+import EmojiBlot from './blots/EmojiBlot';
+import EmojiModule from './modules/emoji/EmojiModule';
+import ToolbarEmoji from './modules/emoji/EmojiToolbar';
+import TextAreaEmoji from './modules/emoji/TextAreaEmoji';
+import {LinkFormatModule} from './modules/LinkFormatModule';
+import {Emoji} from './quill-emoji/EmojiList';
+import {MentionUser} from "./MentionUser.ts";
+import {RichTextEditorHandler} from "./RichTextEditorHandler.ts";
 
 interface UnprivilegedEditor {
     getLength: Quill['getLength'];
@@ -54,53 +54,25 @@ interface UnprivilegedEditor {
 
 const DEFAULT_FILE_NAME_PREFIX = 'embedded-image';
 
-export type Emoji = {
-    name: string,
-    unicode: string,
-    shortname: string,
-    code_decimal: string,
-    category: string,
-    emoji_order: string
-}
 
-export type User = {
-    id: number,
-    name: string,
-    avatar: string,
-    username: string
-}
-
-export type RichTextEditorHandler = {
-    setText(value: string): void;
-    setTextWithBlur(value: string): void;
-    setHtml(value: string): void;
-    setHtmlWithBlur(value: string): void;
-    setCursorAtEnd(): void;
-    insertClassification(text: string): void;
-    hasInvalidClassifications(): boolean;
-    insertTextAtEnd(text: string): void;
-    focus(): void;
-    blur(): void;
-    clear(): void;
-    getReactQuill(): ReactQuill | null;
-    getPlainText(): string;
-    getHtmlContent(): string;
-    isCharacterLimitExceeded(): boolean;
-}
-
+Quill.register('themes/ideascale-snow', IdeascaleSnowTheme, true);
 Quill.register('formats/link', LinkBlot, true);
 Quill.register('blots/block/embed', ImageBlot, true);
 Quill.register('blots/block/embed', VideoBlot, true);
 Quill.register({'modules/counter': RemainingCharactersModule}, true);
-Quill.register('themes/ideascale-snow', IdeascaleSnowTheme, true);
 Quill.register('modules/markdownShortcuts', MarkdownShortcutsModule, true);
 Quill.register('modules/maxCharsLimit', MaxCharsLimitModule, true);
 Quill.register('modules/videoPaste', VideoPasteModule, true);
 Quill.register('modules/resize', QuillResize, true);
 Quill.register('modules/imagePaste', ImagePasteModule, true);
 Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste, true);
-Quill.register('modules/classificationModule', ClassificationModule, true);
+Quill.register('formats/emoji', EmojiBlot, true);
 Quill.register(`formats/${ClassificationBlot.blotName}`, ClassificationBlot, true);
+Quill.register('modules/classificationModule', ClassificationModule, true);
+Quill.register('modules/linkFormat', LinkFormatModule, true);
+Quill.register('modules/emoji-shortname', EmojiModule, true);
+Quill.register('modules/emoji-toolbar', ToolbarEmoji, true);
+Quill.register('modules/emoji-textarea', TextAreaEmoji, true);
 
 const TOOLBAR_CONFIGURATIONS = {
     default: [
@@ -167,7 +139,7 @@ type NewRichTextEditorProps = {
     characterLeftLabel?: string;
     existingAttachments?: string[];
     uploadImage?: (data: FormData, onUploadProgress: UploadProgressCallback) => Promise<UploadedResponse>;
-    fetchMentionUsers?: (searchTerm: string) => Promise<User[]>;
+    fetchMentionUsers?: (searchTerm: string) => Promise<MentionUser[]>;
     defaultValue?: string
     readonly?: boolean;
     tabIndex?: number;
@@ -193,9 +165,9 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         placeholder = 'Enter text',
         maxCharacterLimit = Infinity,
         toolbar = 'minimal',
-        enableEmojiPicker = false,
+        enableEmojiPicker = true,
         enableAtMention = false,
-        offensiveEmojis = [],
+        offensiveEmojis: offensiveEmojiProps,
         characterLeftLabel = '',
         fetchMentionUsers,
         // existingAttachments = [],
@@ -211,7 +183,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         onBlur,
         uploadImage,
         // maxFileSize,
-        classificationConfig = {enabled: false, classifications: {}},
+        classificationConfig: classificationProps,
         defaultFileNamePrefix = DEFAULT_FILE_NAME_PREFIX,
         // enableExternalImageEmbedOption = true,
         externalFileBasePath = '/a/attachments/embedded-file-url'
@@ -219,6 +191,12 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
     const quillRef = useRef<ReactQuill>(null);
     // const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false);
     const insertImageCurrentIndexRef = useRef<number>(0);
+    const classificationConfig = useMemo(() => ({
+        enabled: classificationProps?.enabled || false,
+        classifications: classificationProps?.classifications || {}
+    }), [classificationProps?.classifications, classificationProps?.enabled]);
+    const offensiveEmojis = useMemo(() => offensiveEmojiProps || [], [offensiveEmojiProps]);
+
     const prevClassificationConfig = useRef<RichTextClassificationConfig | undefined>(classificationConfig);
 
     useEffect(() => {
@@ -237,9 +215,9 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
     const getFormats = useMemo(() => {
         const formats = [];
         formats.push(...FORMATS_CONFIGURATIONS[toolbar]);
-        // if (enableEmojiPicker) {
-        //     formats.push('emoji');
-        // }
+        if (enableEmojiPicker) {
+            formats.push('emoji');
+        }
         // if (enableAtMention) {
         //     formats.push('mention');
         // }
@@ -247,7 +225,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             formats.push(ClassificationBlot.blotName);
         }
         return formats;
-    }, [enableAtMention, enableEmojiPicker, toolbar]);
+    }, [classificationConfig?.enabled, enableAtMention, enableEmojiPicker, toolbar]);
 
     const handlers = useMemo(() => {
         return {
@@ -310,7 +288,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                     const mentionListContainerElement = document.querySelectorAll('.ql-mention-list-container');
                     if (mentionListContainerElement && mentionListContainerElement.length > 0) {
                         Array.from(mentionListContainerElement).forEach(item => {
-                            item.setAttribute('tabindex', "0")
+                            item.setAttribute('tabindex', '0')
                         });
                     }
                 }
@@ -361,7 +339,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         return null;
     };
 
-    const focusNextElement = (editor: any) => {
+    const focusNextElement = useCallback((editor: any) => {
         const quillEditor = editor.container?.querySelector('.ql-editor');
         const formElement = quillEditor?.closest('form');
         const modalElement = quillEditor?.closest('.modal');
@@ -378,7 +356,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             }
         }
         return true;
-    };
+    },[]);
 
     const addEmbeddedImage = (url: string, altText?: string) => {
         if (quillRef.current && quillRef.current.getEditor()) {
@@ -396,7 +374,18 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         }
     };
 
-    const imagePasteHandler = async (_dataUrl: string | ArrayBuffer, _type: string, imageData: ImageData) => {
+    const buildFormData = useCallback((imageData: ImageData) => {
+        const file = imageData.toFile();
+        const formData = new FormData();
+        if (file) {
+            const fileExtension = file.name?.substring(file.name.lastIndexOf('.') + 1) ?? 'png';
+            const newFileName = `${defaultFileNamePrefix ?? DEFAULT_FILE_NAME_PREFIX}.${fileExtension}`;
+            formData.append('file', file, newFileName);
+        }
+        return formData;
+    }, [defaultFileNamePrefix]);
+
+    const imagePasteHandler = useCallback(async (_dataUrl: string | ArrayBuffer, _type: string, imageData: ImageData) => {
         if (uploadImage) {
             try {
                 const formData = buildFormData(imageData);
@@ -414,18 +403,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 alert('Error is happened while uploading a data image');
             }
         }
-    };
-
-    const buildFormData = (imageData: ImageData) => {
-        const file = imageData.toFile();
-        const formData = new FormData();
-        if (file) {
-            const fileExtension = file.name?.substring(file.name.lastIndexOf('.') + 1) ?? 'png';
-            const newFileName = `${defaultFileNamePrefix ?? DEFAULT_FILE_NAME_PREFIX}.${fileExtension}`;
-            formData.append('file', file, newFileName);
-        }
-        return formData;
-    };
+    }, [buildFormData, uploadImage]);
 
     const modules = useMemo(() => ({
         toolbar: {
@@ -449,6 +427,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         },
         videoPaste: {},
         imagePaste: {},
+        linkFormat: {},
         imageDropAndPaste: {
             handler: imagePasteHandler
         },
@@ -466,6 +445,22 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         //     }
         // },
         // 'emoji-textarea': enableEmojiPicker,
+
+        // 'emoji':true,
+        'emoji-toolbar': true,
+        'emoji-shortname': enableEmojiPicker ? {
+            emojiList: offensiveEmojis.length > 0 ? (emojiList as Emoji[]).filter(item => !offensiveEmojis.includes(item.shortname)) : emojiList,
+            fuse: {
+                shouldSort: true,
+                threshold: 0.1,
+                location: 0,
+                distance: 100,
+                maxPatternLength: 32,
+                minMatchCharLength: 1,
+                keys: ['shortname']
+            }
+        } : false,
+        'emoji-textarea': enableEmojiPicker,
         'counter': characterLeftLabel && {maxCharacter: maxCharacterLimit, label: characterLeftLabel},
         // mention: enableAtMention ? getMentionConfiguration() : false,
         markdownShortcuts: {},
@@ -474,7 +469,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         resize: {
             modules: ['Resize', 'DisplaySize']
         }
-    }), [characterLeftLabel, enableAtMention, enableEmojiPicker, getMentionConfiguration, handlers, maxCharacterLimit, toolbar]);
+    }), [toolbar, handlers, imagePasteHandler, enableEmojiPicker, offensiveEmojis, characterLeftLabel, maxCharacterLimit, enableAtMention, getMentionConfiguration, focusNextElement]);
 
     const getDefaultValue = useCallback(() => {
         return HtmlConverter.toRenderHtmlFormat(defaultValue);
@@ -486,7 +481,6 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
     };
 
     const onChangeEvent = useCallback((value: string, delta: DeltaStatic, source: EmitterSource, editor: UnprivilegedEditor) => {
-
         let hasEmptyValue;
         if (classificationConfig?.enabled && value?.length) {
             const parsedDocs: Document = new DOMParser().parseFromString(value, 'text/html');
@@ -502,7 +496,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         if (onChange) {
             onChange(hasEmptyValue ? '' : value, delta, source, editor);
         }
-    }, [onChange]);
+    }, [classificationConfig?.enabled, onChange]);
 
     useEffect(() => {
         ImageBlot.basePath = externalFileBasePath;
@@ -609,102 +603,103 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
     }, [debug]);
 
     useEffect(() => {
-        const closeEmojiPlate = () => {
-            const eleEmojiPlate = document.getElementById('textarea-emoji');
-            eleEmojiPlate?.remove();
-        };
+        if (enableEmojiPicker) {
+            const closeEmojiPlate = () => {
+                const eleEmojiPlate = document.getElementById('textarea-emoji');
+                eleEmojiPlate?.remove();
+            };
 
-        const curseEmoji = () => {
-            offensiveEmojis.forEach(item => {
-                const selector = `.ap-${item.replace(/:/g, '').replace(/&#x?/g, '').replace(/;/g, '')}`;
-                const element = document.querySelector(selector);
-                if (element) {
-                    element.classList.add('d-none');
-                }
-            });
-        };
+            const curseEmoji = () => {
+                offensiveEmojis.forEach(item => {
+                    const selector = `.ap-${item.replace(/:/g, '').replace(/&#x?/g, '').replace(/;/g, '')}`;
+                    const element = document.querySelector(selector);
+                    if (element) {
+                        element.classList.add('d-none');
+                    }
+                });
+            };
 
-        const resetEmojiPopupPosition = (emojiPopups: NodeListOf<Element>) => {
-            Array.from(emojiPopups).forEach((emojiPopup: Element) => {
-                if (emojiPopup) {
-                    const style = getComputedStyle(emojiPopup);
-                    if (style && +style.top.replace('px', '') < 0) {
-                        if (window.innerWidth < 420) {
-                            (emojiPopup as HTMLElement).style.top = '-420px';
-                        } else {
-                            (emojiPopup as HTMLElement).style.top = -(+style.height.replace('px', '') + 30) + 'px';
+            const resetEmojiPopupPosition = (emojiPopups: NodeListOf<Element>) => {
+                Array.from(emojiPopups).forEach((emojiPopup: Element) => {
+                    if (emojiPopup) {
+                        const style = getComputedStyle(emojiPopup);
+                        if (style && +style.top.replace('px', '') < 0) {
+                            if (window.innerWidth < 420) {
+                                (emojiPopup as HTMLElement).style.top = '-420px';
+                            } else {
+                                (emojiPopup as HTMLElement).style.top = -(+style.height.replace('px', '') + 30) + 'px';
+                            }
                         }
                     }
-                }
-            });
-        };
-        const emojiPopupPosition = () => {
-            const emojiControlElements = document.querySelectorAll('.textarea-emoji-control');
-            if (emojiControlElements) {
-                Array.from(emojiControlElements).forEach((element: Element) => {
-                    element.addEventListener('click', () => {
-                        const emojiPopups = document.querySelectorAll('#textarea-emoji');
-                        if (emojiPopups) {
-                            resetEmojiPopupPosition(emojiPopups);
-                            curseEmoji();
-                        }
+                });
+            };
+            const emojiPopupPosition = () => {
+                const emojiControlElements = document.querySelectorAll('.textarea-emoji-control');
+                if (emojiControlElements) {
+                    Array.from(emojiControlElements).forEach((element: Element) => {
+                        element.addEventListener('click', () => {
+                            const emojiPopups = document.querySelectorAll('#textarea-emoji');
+                            if (emojiPopups) {
+                                resetEmojiPopupPosition(emojiPopups);
+                                curseEmoji();
+                            }
+                        });
                     });
+                }
+            };
+
+            const editorElement = document.querySelectorAll('.new-rich-text-editor');
+            Array.from(editorElement).forEach(el => {
+                el.querySelectorAll('.textarea-emoji-control').forEach(emojiControl => {
+                    emojiControl.setAttribute('aria-hidden', 'true');
                 });
-            }
-        };
-
-        const editorElement = document.querySelectorAll('.new-rich-text-editor');
-        Array.from(editorElement).forEach(el => {
-            el.querySelectorAll('.textarea-emoji-control').forEach(emojiControl => {
-                emojiControl.setAttribute('aria-hidden', 'true');
-            });
-            const modalElm = el?.closest('.modal');
-            if (modalElm) {
-                modalElm.addEventListener('click', (event) => {
-                    const clickedElement = event.target as HTMLElement;
-                    const emojiButton = clickedElement.parentElement?.closest('.textarea-emoji-control');
-                    const emojiPlate = clickedElement.parentElement?.closest('#textarea-emoji');
-                    if (!emojiButton && !emojiPlate) {
-                        closeEmojiPlate();
-                    }
-
-                    const qlPicker = clickedElement.parentElement?.closest('.ql-header.ql-picker');
-                    if (!qlPicker) {
-                        const headerPicker = document.querySelector('.modal .ql-header.ql-picker');
-                        if (headerPicker) {
-                            headerPicker.classList.remove('ql-expanded');
+                const modalElm = el?.closest('.modal');
+                if (modalElm) {
+                    modalElm.addEventListener('click', (event) => {
+                        const clickedElement = event.target as HTMLElement;
+                        const emojiButton = clickedElement.parentElement?.closest('.textarea-emoji-control');
+                        const emojiPlate = clickedElement.parentElement?.closest('#textarea-emoji');
+                        if (!emojiButton && !emojiPlate) {
+                            closeEmojiPlate();
                         }
-                    }
-                    curseEmoji();
-                });
-                emojiPopupPosition();
-            }
-        });
 
-        const containerElement = document.querySelectorAll('.ql-container');
-        if (containerElement && containerElement.length > 0) {
-            Array.from(containerElement).forEach(item => {
-                item.classList.add('top-emoji');
+                        const qlPicker = clickedElement.parentElement?.closest('.ql-header.ql-picker');
+                        if (!qlPicker) {
+                            const headerPicker = document.querySelector('.modal .ql-header.ql-picker');
+                            if (headerPicker) {
+                                headerPicker.classList.remove('ql-expanded');
+                            }
+                        }
+                        curseEmoji();
+                    });
+                    emojiPopupPosition();
+                }
             });
+
+            const containerElement = document.querySelectorAll('.ql-container');
+            if (containerElement && containerElement.length > 0) {
+                Array.from(containerElement).forEach(item => {
+                    item.classList.add('top-emoji');
+                });
+            }
+
+            document.addEventListener('click', (event: MouseEvent) => {
+                const clickedElement = event.target as Element;
+                if (clickedElement.classList.contains('bem') && clickedElement.classList.contains('ap')) {
+                    closeEmojiPlate();
+                }
+                if (clickedElement.classList.contains('i-nature') || clickedElement.classList.contains('i-people')
+                    || clickedElement.classList.contains('i-food') || clickedElement.classList.contains('i-symbols')
+                    || clickedElement.classList.contains('i-activity') || clickedElement.classList.contains('i-travel')
+                    || clickedElement.classList.contains('i-objects') || clickedElement.classList.contains('i-flags')) {
+                    curseEmoji();
+                }
+            });
+            curseEmoji();
+            emojiPopupPosition();
         }
+    }, [enableEmojiPicker, offensiveEmojis]);
 
-        document.addEventListener('click', (event: MouseEvent) => {
-            const clickedElement = event.target as Element;
-            if (clickedElement.classList.contains('bem') && clickedElement.classList.contains('ap')) {
-                closeEmojiPlate();
-            }
-            if (clickedElement.classList.contains('i-nature') || clickedElement.classList.contains('i-people')
-                || clickedElement.classList.contains('i-food') || clickedElement.classList.contains('i-symbols')
-                || clickedElement.classList.contains('i-activity') || clickedElement.classList.contains('i-travel')
-                || clickedElement.classList.contains('i-objects') || clickedElement.classList.contains('i-flags')) {
-                curseEmoji();
-            }
-        });
-        curseEmoji();
-        emojiPopupPosition();
-    }, []);
-
-    const [value, setValue] = useState('');
 
     return (
         <section onDrop={event => event.preventDefault()} onDragOver={event => event.preventDefault()}>
@@ -725,23 +720,23 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 onChangeSelection={onChangeSelection}
             />
 
-            <ReactQuill
-                id={id}
-                ref={quillRef}
-                placeholder={placeholder}
-                className={`new-rich-text-editor ${readonly ? 'readonly' : ''} ${className}`}
-                // modules={modules}
-                // formats={getFormats}
-                theme="snow"
-                defaultValue={getDefaultValue()}
-                readOnly={readonly}
-                tabIndex={tabIndex}
-                onChange={(value, delta, source, editor) => onChangeEvent(value, delta, source, editor)}
-                onBlur={onBlur}
-                onFocus={onFocus}
-                onChangeSelection={onChangeSelection}
-            />
-            <ReactQuill theme="snow" value={value} onChange={setValue} />
+            {/*<ReactQuill*/}
+            {/*    id={id}*/}
+            {/*    ref={quillRef}*/}
+            {/*    placeholder={placeholder}*/}
+            {/*    className={`new-rich-text-editor ${readonly ? 'readonly' : ''} ${className}`}*/}
+            {/*    // modules={modules}*/}
+            {/*    // formats={getFormats}*/}
+            {/*    theme="snow"*/}
+            {/*    defaultValue={getDefaultValue()}*/}
+            {/*    readOnly={readonly}*/}
+            {/*    tabIndex={tabIndex}*/}
+            {/*    onChange={(value, delta, source, editor) => onChangeEvent(value, delta, source, editor)}*/}
+            {/*    onBlur={onBlur}*/}
+            {/*    onFocus={onFocus}*/}
+            {/*    onChangeSelection={onChangeSelection}*/}
+            {/*/>*/}
+            {/*<ReactQuill theme="snow" value={value} onChange={setValue} />*/}
 
             {/*{*/}
             {/*    imageUploadModalOpen &&*/}

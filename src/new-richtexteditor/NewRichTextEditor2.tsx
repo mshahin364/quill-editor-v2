@@ -32,6 +32,8 @@ import {RichTextClassificationConfig} from "./RichTextClassificationConfig";
 import {ToolbarType} from "./ToolbarType";
 import type DeltaStatic from "quill-delta";
 import {EmojiModule} from "./emoji-mart/emoji-module.ts";
+import {MentionUser} from "./MentionUser.ts";
+import {RichTextEditorHandler} from "./RichTextEditorHandler.ts";
 
 interface UnprivilegedEditor {
   getLength: Quill["getLength"];
@@ -44,40 +46,6 @@ interface UnprivilegedEditor {
 }
 
 const DEFAULT_FILE_NAME_PREFIX = "embedded-image";
-
-export type Emoji = {
-  name: string;
-  unicode: string;
-  shortname: string;
-  code_decimal: string;
-  category: string;
-  emoji_order: string;
-};
-
-export type User = {
-  id: number;
-  name: string;
-  avatar: string;
-  username: string;
-};
-
-export type RichTextEditorHandler = {
-  setText(value: string): void;
-  setTextWithBlur(value: string): void;
-  setHtml(value: string): void;
-  setHtmlWithBlur(value: string): void;
-  setCursorAtEnd(): void;
-  insertClassification(text: string): void;
-  hasInvalidClassifications(): boolean;
-  insertTextAtEnd(text: string): void;
-  focus(): void;
-  blur(): void;
-  clear(): void;
-  getReactQuill(): ReactQuill | null;
-  getPlainText(): string;
-  getHtmlContent(): string;
-  isCharacterLimitExceeded(): boolean;
-};
 
 Quill.register("formats/link", LinkBlot, true);
 Quill.register("blots/block/embed", ImageBlot, true);
@@ -136,7 +104,6 @@ const TOOLBAR_CONFIGURATIONS = {
     "link",
     "video",
     "image",
-      "emoji"
   ],
   textOnly: [
     { header: HEADER_SIZE_LIST },
@@ -170,7 +137,6 @@ const TOOLBAR_CONFIGURATIONS = {
     { align: "justify" },
     "blockquote",
     "link",
-    "emoji"
   ],
   titleText: [
     { header: HEADER_SIZE_LIST_CUSTOM },
@@ -236,7 +202,7 @@ type NewRichTextEditorProps = {
     data: FormData,
     onUploadProgress: UploadProgressCallback,
   ) => Promise<UploadedResponse>;
-  fetchMentionUsers?: (searchTerm: string) => Promise<User[]>;
+  fetchMentionUsers?: (searchTerm: string) => Promise<MentionUser[]>;
   defaultValue?: string;
   readonly?: boolean;
   tabIndex?: number;
