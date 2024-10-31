@@ -4,8 +4,10 @@ import './App.css'
 // import ReactQuill from "react-quill-new";
 // import {useState} from "react";
 
-import 'react-quill-new/dist/quill.snow.css';
+// import 'react-quill-new/dist/quill.snow.css';
 import '../src/new-richtexteditor/emoji.css';
+// import 'quill-mention/dist/quill.mention.css';
+import "./assets/global.scss";
 
 function App2() {
     // const [value, setValue] = useState('');

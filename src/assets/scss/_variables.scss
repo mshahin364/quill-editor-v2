@@ -1,0 +1,929 @@
+@use "sass:math";
+
+@import "~bootstrap/scss/variables";
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+@import "../themes/bootstrap-theme-config";
+
+$font-size-base: 1rem;
+$font-size-base-px: 14px;
+$font-size-sm-px: 12px;
+$font-size-md-px: 16px;
+$font-size-lg-px: 18px;
+$ios-input-font-size: 16px;
+$idea-form-modal-header-size: 22px;
+$modal-header-font-size: 1.6rem;
+$custom-checkbox-diameter: 18px;
+
+$font-size-sm: math.div($font-size-sm-px, $font-size-base-px) * 1rem;
+$font-size-md: math.div($font-size-md-px, $font-size-base-px) * 1rem;
+$font-size-lg: math.div($font-size-lg-px, $font-size-base-px) * 1rem;
+
+$classic-link-color: #384EC1;
+$classic-link-hover-color: #273686;
+$classic-link-visited-color: #ab38c1;
+
+$dark-theme-classic-link-color: #65B1FF;
+$dark-theme-classic-link-hover-color: #4894FD;
+$dark-theme-classic-link-visited-color: #C58AF9;
+
+
+$solitude: #f0f2f5;
+$light-blue: #eef6fc;
+$alice-blue: #EEF6FC;
+$aqua-blue: #384EC1;
+$lavender: #E4E7F7;
+$raven: #717273;
+$white-gray: #E5E5E5;
+$white: #fff;
+$gray: #666;
+$rs-gray: #999;
+$dark-theme-gray: #999;
+$gray-light: #f6f7f9;
+$base-body-color: #F0F0F0;
+$text-gray: $gray;
+$text-gray-dark: #212529;
+$text-muted: #6c757d;
+$body-bg-color: #f0f0f0;
+$ash-color: #333;
+$border-color: #ddd;
+$dark-theme-border-color: #48484a;
+$dark-theme-custom-border-color: #777;
+$menu-icon-color: #646464;
+$bg-gray: rgb(246, 247, 249);
+$border-gray: #d2d4db;
+$file-input-text-color: #495057;
+$chinese-silver: #CCC;
+$red-orange: #fffcfb;
+$eclipse: #3f3a3b;
+$dropdown-divider-bg: #e9ecef;
+
+$primary: $aqua-blue;
+$link-color: $primary;
+
+$anonymous-color: #E8DA5E;
+$team-color: #E09300;
+$duplicate-color: #625A0E;
+$pending-color: #AEB7E8;
+$in-reserve-color: #C4C4C4;
+$recycling-bin-color: #245400;
+$selected-color: #DAFFBE;
+$translated-color: #3D8D00;
+$administrator-color: #E8AB1C;
+$inbound-color: #FFD585;
+$unverified-translation-color: #BF2C04;
+$owner-color: #F0E694;
+$open-color: #55C500;
+$community-owner-color: #D4C21F;
+$parent-idea-color: #731A02;
+
+$custom-blue-2: #2D3E9A;
+$custom-blue-4: #AEB7E8;
+$custom-green-1: #245400;
+$custom-green-2: #3D8D00;
+$custom-green-3: #55C500;
+$custom-green-4: #CDFFA7;
+$custom-green-5: #DAFFBE;
+$custom-gold-1: #625A0E;
+$custom-gold-2: #D4C21F;
+$custom-gold-4: #E8DA5E;
+$custom-gold-5: #F0E694;
+$custom-yellow-1: #E09300;
+$custom-yellow-3: #FFB933;
+$custom-yellow-4: #FFD585;
+$custom-red-1: #731A02;
+$custom-red-2: #BF2C04;
+$custom-red-3: #E53504;
+$custom-red-5: #FC7854;
+$custom-red-6: #FF8D88;
+$custom-red-7: #FF9D90;
+$custom-neutral-2: #424242;
+$custom-neutral-4: #C4C4C4;
+$neutral: #A0A1A3;
+$neutral-dark: #272829;
+
+$facebook-color: #3a5998;
+$twitter-color: #00aced;
+$linkedin-color: #0073b1;
+$google-color: #db3236;
+$yahoo-color: #761c98;
+$reddit-color: #ff4500;
+
+$black: #000;
+$charcoal: #333;
+$granite: #666;
+$spanish-gray: #999;
+$serene-grey: #ACACAC;
+$gainsboro: #ddd;
+$whisper: #e6e6e6;
+$is-gray: #F0F2F5;
+$white-smoke: #f5f5f5;
+$white: #fff;
+
+$red-dark: #611A15;
+$red: #FB5629;
+$red-light: #FEDDD4;
+$error-light: #FFEEEA;
+$error-light-hover: #EED6D0;
+$error-red-dark: #BF2C04;
+
+$yellow-dark: #663C00;
+$yellow: #FF9800;
+$yellow-light: #FFF4E5;
+
+$gold-dark: #A39518;
+$gold: #E2D136;
+$gold-light: #F5F0BC;
+
+$blue-dark: #222F74;
+$blue: #384EC1;
+$blue-light: #E4E7F7;
+
+$green-dark: #1E4620;
+$green: #4CAF50;
+$green-alt: #CDFFA7;
+$green-light: #DBEFDB;
+$light-white: #EDEFF3;
+
+$danger-color: $red-dark;
+$danger-bg: $red-light;
+$badge-red: #BF2C04;
+
+$warning-color: #996F1F;
+$warning-bg: $yellow-light;
+
+$info-color: $blue-dark;
+$info-bg: $blue-light;
+
+$success-color: $green-dark;
+$success-bg: $green-light;
+
+$light-color: $charcoal;
+$light-bg: $white-smoke;
+
+$teal: #11C099;
+$teal-light: #50E3C2;
+
+$input-bg: #F0F2F5;
+$dark-theme-input-bg: #333;
+$input-bg-alt: #fff;
+$dark-theme-item-selected-bg: #2f2f2f;
+$default-input-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.025);
+
+$success-default-light: #03854D;
+$success-default-dark: #19C26D;
+$warning-default-light: #876B10;
+$warning-default-dark: #E8AB1C;
+$danger-default-light: #D62C20;
+$danger-default-dark: #F2543F;
+
+//Modal
+$modal-inner-padding: math.div(24, 14) * 1rem;
+$modal-header-padding-y: $modal-inner-padding;
+$modal-header-padding-x: $modal-inner-padding;
+$modal-inner-padding-sm: math.div(8, 14) * 1rem;
+
+$dark-theme-warning-bg-weak: #423D0A;
+$warning-bg-weak: #fbf8d5;
+$theme-warning-bg-weak: 'theme-warning-bg-weak';
+
+$dark-theme-warning-bg-strong: #472625;
+$warning-bg-strong: #ffebeb;
+$theme-warning-bg-strong: 'theme-warning-bg-strong';
+
+
+$dark-theme-primary: #4894FD;
+$dark-theme-primary-text: #65B1FF;
+$dark-theme-secondary: #48484A;
+$dark-theme-background-color: #3A3A3B;
+$dark-theme-secondary-background-color: #636366;
+$dark-theme-secondary-color: #EEE;
+$dark-theme-body-bg-color: #2C2C2F;
+$dark-theme-foreground-color: #DADADA;
+
+$toolbar-bg-color: #dddddd;
+$dark-theme-toolbar-bg-color: $dark-theme-secondary;
+$editor-bg-color: #f0f2f5;
+$dark-theme-editor-bg-color: $dark-theme-input-bg;
+$box-shadow: 0 .5rem 1rem rgba($black, .15) !default;
+$cropper-shadow: 0 0 0 1px #39f;
+
+
+$icon-color: #666;
+$icon-active-color: $primary;
+$dark-theme-icon-color: #999;
+$dark-theme-icon-active-color: $dark-theme-primary-text;
+
+$dark-theme-input-border-color: $dark-theme-border-color;
+$dark-theme-checkbox-border-color: #999;
+
+$triangle-width: 5px !default;
+$triangle-color: #666 !default;
+$dark-theme-triangle-color: #999 !default;
+
+//Skeleton color
+$skeleton-default-bg: #eee !default;
+$skeleton-highlight-bg: #f5f5f5 !default;
+$skeleton-background-image: linear-gradient(
+                90deg,
+                $skeleton-default-bg,
+                $skeleton-highlight-bg,
+                $skeleton-default-bg
+);
+$dark-theme-skeleton-default-bg: #222 !default;
+$dark-theme-skeleton-highlight-bg: #333 !default;
+$dark-theme-skeleton-background-image: linear-gradient(
+                90deg,
+                $dark-theme-skeleton-default-bg,
+                $dark-theme-skeleton-highlight-bg,
+                $dark-theme-skeleton-default-bg
+);
+
+$app-loader-color: #ccc;
+$dark-theme-app-loader-color: #636366;
+$scroll-thumb-color: #C0C0C0;
+$dark-theme-scroll-thumb-color: #5F5F5F;
+
+//Dropdown color
+$dark-theme-dropdown-color: $dark-theme-foreground-color;
+$dark-theme-dropdown-bg: $dark-theme-background-color;
+$dark-theme-dropdown-divider-bg: $dark-theme-secondary;
+$dark-theme-dropdown-link-color: $dark-theme-foreground-color;
+$dark-theme-dropdown-link-hover-color: $dark-theme-foreground-color;
+$dark-theme-dropdown-link-hover-bg: $dark-theme-secondary;
+$dark-theme-dropdown-item-hover-bg: #232324;
+$dark-theme-dropdown-link-active-color: $dark-theme-primary-text;
+$dark-theme-dropdown-link-active-bg: $dark-theme-item-selected-bg;
+$dark-theme-dropdown-link-disabled-color: $gray;
+$dark-theme-dropdown-header-color: $dark-theme-dropdown-link-color;
+$dark-theme-dropdown-header-bg: $dark-theme-secondary-background-color;
+
+$dark-theme-placeholder-color: #aaa;
+$dark-theme-btn-secondary-bg: $dark-theme-secondary-background-color;
+$dark-theme-btn-secondary-color: $dark-theme-secondary-color;
+
+$classic-datepicker-box-shadow: 1px 0 0 $whisper, -1px 0 0 $whisper, 0 1px 0 $whisper, 0 -1px 0 $whisper, 0 3px 13px rgba(0, 0, 0, 0.08);
+$dark-theme-classic-datepicker-box-shadow: 1px 0 0 $dark-theme-border-color, -1px 0 0 $dark-theme-border-color, 0 1px 0 $dark-theme-border-color, 0 -1px 0 $dark-theme-border-color, 0 3px 13px rgba(0, 0, 0, 0.08);
+
+$classic-datepicker-in-range-box-shadow: -5px 0 0 $whisper, 5px 0 0 $whisper;
+$dark-theme-classic-datepicker-in-range-box-shadow: -5px 0 0 $dark-theme-border-color, 5px 0 0 $dark-theme-border-color;
+
+$classic-datepicker-multi-month-box-shadow: -2px 0 0 $whisper, 5px 0 0 $whisper;
+$dark-theme-classic-datepicker-multi-month-box-shadow: -2px 0 0 $dark-theme-border-color, 5px 0 0 $dark-theme-border-color;
+
+$input-group-input-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+$dark-theme-input-group-input-box-shadow: inset 0 0 0 1px $dark-theme-secondary;
+
+$dark-theme: "dark-theme";
+$light-theme: "light-theme";
+
+$theme-primary: 'theme-primary';
+$theme-primary-text: '$theme-primary-text';
+$theme-secondary: 'theme-secondary';
+
+$theme-datepicker-box-shadow: 'theme-datepicker-box-shadow';
+$theme-background-color: 'theme-background-color';
+$theme-secondary-background-color: 'theme-secondary-background-color';
+$theme-foreground-color: 'theme-foreground-color';
+$theme-border-color: 'theme-border-color';
+$theme-sr-only-background-color: 'theme-sr-only-background-color';
+$theme-sr-only-color: 'theme-sr-only-color';
+
+$theme-body-background-color: 'theme-body-background-color';
+$theme-bg-gray: 'theme-bg-gray';
+$theme-bg-hover-gray: 'theme-bg-hover-gray';
+
+//Link
+/*$theme-link-color: 'theme-link-color';
+$theme-link-color-visited: 'theme-link-color-visited';
+$theme-link-color-hover: 'theme-link-color-hover';*/
+$theme-classic-link-color: 'theme-classic-link-color';
+$theme-classic-link-hover-color: 'theme-classic-link-hover-color';
+$theme-classic-link-visited-color: 'theme-classic-link-visited-color';
+
+
+// Icon
+$theme-icon-color: 'theme-icon-color';
+$theme-icon-active-color: 'theme-icon-active-color';
+
+// Input
+$theme-input-bg: 'theme-input-bg';
+$theme-input-placeholder-color: 'theme-input-placeholder-color';
+$theme-input-disabled-bg: 'theme-input-disabled-bg';
+$theme-input-color: 'theme-input-color';
+$theme-input-border-color: 'theme-input-border-color';
+$theme-checkbox-border-color: 'theme-checkbox-border-color';
+$theme-input-group-input-box-shadow: 'theme-input-group-input-box-shadow';
+
+$dark-theme-disabled-input-bg: #444;
+
+// Tag
+$dark-theme-tag-selected-bg: #4A4A4C;
+$theme-tag-bg: 'theme-tag-bg';
+$theme-tag-color: 'theme-tag-color';
+$theme-tag-selected-bg: 'theme-tag-selected-bg';
+$theme-tag-badge-color: 'theme-tag-badge-color';
+$theme-tag-badge-border: 'theme-tag-badge-border';
+
+$theme-triangle-color: 'theme-triangle-color';
+
+// Dropdown
+$theme-dropdown-color: 'theme-dropdown-color';
+$theme-dropdown-bg: 'theme-dropdown-bg';
+$theme-dropdown-divider-bg: 'theme-dropdown-divider-bg';
+$theme-dropdown-link-color: 'theme-dropdown-link-color';
+
+$theme-dropdown-link-hover-color: 'theme-dropdown-link-hover-color';
+$theme-dropdown-link-hover-bg: 'theme-dropdown-link-hover-bg';
+$theme-dropdown-item-hover-bg: 'theme-dropdown-item-hover-bg';
+
+$theme-dropdown-link-active-color: 'theme-dropdown-link-active-color';
+$theme-dropdown-link-active-bg: 'theme-dropdown-link-active-bg';
+
+$theme-dropdown-link-disabled-color: 'theme-dropdown-link-disabled-bg';
+
+$theme-dropdown-header-color: 'theme-dropdown-header-color';
+$theme-dropdown-header-bg: 'theme-dropdown-header-bg';
+
+// Panel
+$dark-theme-panel-background-color: $dark-theme-background-color;
+$theme-custom-panel-bg: 'custom-theme-panel-bg';
+$theme-custom-panel-header-bg: 'theme-custom-panel-header-bg';
+$theme-panel-bg: 'theme-panel-bg';
+$theme-panel-default-header-bg: 'theme-panel-default-header-bg';
+
+// Popover
+$dark-theme-popover-header-bg: $dark-theme-body-bg-color;
+$dark-theme-popover-body-bg: $dark-theme-body-bg-color;
+$popover-border-color: rgba(0, 0, 0, 0.15);
+
+$theme-popover-header-bg: 'theme-popover-header-bg';
+$theme-popover-body-bg: 'theme-popover-body-bg';
+$theme-popover-arrow-bg: 'theme-popover-arrow-bg';
+$theme-popover-border-color: 'theme-popover-border-color';
+
+// Info tip
+$theme-info-tip-color: 'theme-info-tip-color';
+$theme-info-tip-text: '$theme-info-tip-text';
+
+// Input Group
+$input-group-append-box-shadow: inset -1px 0 0 0 rgb(0 0 0 / 10%), inset 0 1px 0 0 rgb(0 0 0 / 10%), inset 0 -1px 0 0 rgb(0 0 0 / 10%);
+$dark-theme-input-group-append-box-shadow: inset -1px 0 0 0 $dark-theme-secondary, inset 0 1px 0 0 $dark-theme-secondary, inset 0 -1px 0 0 $dark-theme-secondary;
+$input-group-prepend-box-shadow: inset 1px 0 0 0 rgb(0 0 0 / 10%), inset 0 1px 0 0 rgb(0 0 0 / 10%), inset 0 -1px 0 0 rgb(0 0 0 / 10%);
+$dark-theme-input-group-prepend-box-shadow: inset 1px 0 0 0 $dark-theme-secondary, inset 0 1px 0 0 $dark-theme-secondary, inset 0 -1px 0 0 $dark-theme-secondary;
+$input-group-append-prepend-bg: $solitude;
+$dark-theme-input-group-append-prepend-bg: $dark-theme-secondary-background-color;
+$theme-input-group-append-prepend-bg: 'theme-input-group-append-prepend-bg';
+$theme-input-group-append-box-shadow: 'theme-input-group-append-box-shadow';
+$theme-input-group-prepend-box-shadow: 'theme-input-group-prepend-box-shadow';
+$theme-error-input-text-color: 'theme-error-input-text-color';
+
+//Buttons
+$btn-link-secondary-color: #343A40;
+$theme-btn-secondary-bg: 'theme-btn-secondary-bg';
+$theme-btn-danger: 'theme-btn-danger';
+$theme-btn-danger-color: 'theme-btn-danger-color';
+$theme-btn-secondary-color: 'theme-btn-secondary-color';
+$theme-btn-gray-bg: 'theme-btn-gray-bg';
+$theme-btn-gray-color: 'theme-btn-gray-color';
+$theme-btn-light-bg: 'theme-btn-light-bg';
+$theme-btn-light-color: 'theme-btn-light-color';
+$theme-btn-link-secondary: 'theme-btn-link-secondary';
+$theme-btn-secondary-danger-bg: 'theme-btn-secondary-danger-bg';
+$theme-btn-secondary-danger-hover-bg: 'theme-btn-secondary-danger-hover-bg';
+$theme-btn-secondary-danger-color: 'theme-btn-secondary-danger-color';
+$theme-btn-secondary-primary-bg: "theme-btn-secondary-primary-bg";
+$theme-btn-secondary-primary-hover-bg: "theme-btn-secondary-primary-hover-bg";
+$theme-btn-secondary-primary-color: "theme-btn-secondary-primary-color";
+
+// Forms
+$see-more-color: #343A40;
+$classic-form-custom-panel-border: $white-gray;
+$theme-form-custom-panel-border: 'theme-form-custom-panel-border';
+$theme-see-more-color: 'theme-see-more-color';
+$theme-error: 'theme-error';
+
+//Skeleton
+$theme-skeleton-default-background: 'theme-skeleton-default-background';
+$theme-skeleton-background-image: 'theme-skeleton-background-image';
+$theme-app-loader-color: 'theme-app-loader-color';
+
+// Switch
+$classic-switch-bg: #aaaaaa;
+$theme-switch-bg: 'theme-switch-bg';
+$theme-switch-color: 'theme-switch-color';
+
+// Modal
+$classic-close-icon-color: $black;
+$dark-theme-close-icon-color: $spanish-gray;
+$theme-close-icon-color: 'theme-close-icon-color';
+$theme-close-icon-shadow-color: 'theme-close-icon-shadow-color';
+
+// Text
+$dark-theme-text-muted: #AEAEAE;
+$classic-text-emphasize-color: #343A40;
+$text-disabled: #555;
+$classic-text-emphasize-hover-color: #121416;
+$theme-text-gray: 'theme-text-gray';
+$theme-text-muted: 'theme-text-muted';
+$theme-text-disabled: 'theme-text-disabled';
+$theme-text-emphasize-color: 'theme-text-emphasize-color';
+$theme-text-emphasize-hover-color: 'theme-text-emphasize-hover-color';
+$theme-text-danger-secondary: '$theme-text-danger-secondary';
+
+// RC slider mark
+$theme-rc-slider-mark-NA-color: 'theme-rc-slider-mark-NA-color';
+$theme-rc-slider-handle-bg: 'theme-rc-slider-handle-bg';
+
+// Datepicker
+$dark-theme-classic-date-up-down-arrow-img: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAANCAYAAAB7AEQGAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAABoSURBVHgBvZHBDYAwCEWhdQ8dxVHspQkTkRASHc0V3MBqoqGNEk++Cwm8A3wADMw8icgMDWiFEMIpIOKSc06VZIV7YER8EloRVbUHhxjjBv9yLD54AhGtXamjd10p6VtOV9NLvOLtdzumrSsGy40FwgAAAABJRU5ErkJggg==') !important;
+$classic-date-up-down-arrow-img: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAANCAYAAAB7AEQGAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAACUSURBVHgBvdG5DYMwFIDh93BQJkAkVSgxyIpHyAgZASaDFdgEREMJHUdFRWkOCck8I0r+xoc+WbINoBUEMgrDbwIkpgPLUgkiSMd5ecPQZQe0g32TQkbBGUTO+QcumqbnCPeGvi+9K1BVef2wbfgpZd5uOwEhXYaY9X2bu+67WRZ/CsqyiNf59pgU6sBICBkJYf7dDMbuNTO5VgbzAAAAAElFTkSuQmCC') !important;
+$classic-prev-next-month-day-color: rgba(57, 57, 57, 0.3);
+$dark-theme-classic-prev-next-month-day-color: $dark-theme-secondary-background-color;
+$theme-prev-next-month-day-color: 'theme-prev-next-month-day-color';
+$theme-datepicker-border-color: 'theme-datepicker-border-color';
+$theme-datepicker-color: 'theme-datepicker-color';
+$theme-datepicker-selected-color: 'theme-datepicker-selected-color';
+$theme-datepicker-icon-bg: 'theme-datepicker-icon-bg';
+$theme-datepicker-icon-color: '$theme-datepicker-icon-color';
+$theme-datepicker-in-range-bg: 'theme-datepicker-in-range-bg';
+$theme-datepicker-in-range-border: 'theme-datepicker-in-range-border';
+$theme-datepicker-in-range-box-shadow: 'theme-datepicker-in-range-box-shadow';
+$theme-datepicker-multi-month-box-shadow: 'theme-datepicker-multi-month-box-shadow';
+$theme-datepicker-date-up-down-arrow-img: 'theme-datepicker-date-up-down-arrow-img';
+$theme-datepicker-arrow-bg: 'theme-datepicker-arrow-bg';
+
+// Progressbar
+$theme-progressbar-bg: 'theme-progressbar-bg';
+
+// Flash
+$classic-flash-start-bg: rgba(255, 255, 0, 0);
+$classic-flash-end-bg: rgba(245, 240, 188, 1);
+$dark-theme-classic-flash-start-bg: rgba(58, 58, 59, 0.5);
+$dark-theme-classic-flash-end-bg: rgba(58, 58, 59, 1);
+$theme-flash-start-bg: 'theme-flash-start-bg';
+$theme-flash-end-bg: 'theme-flash-end-bg';
+
+$theme-ideascale-custom-radio-hover-bg: 'theme-ideascale-custom-radio-hover-bg';
+$theme-custom-border-color: 'theme-custom-border-color';
+
+// Label dropdown arrow
+$theme-label-dropdown-arrow: 'theme-label-dropdown-arrow';
+
+// Quill Rich text Editor
+$editor-min-height: 180px;
+$editor-max-height: 600px;
+$editor-list-container-width: 300px;
+$editor-list-container-height: 230px;
+$classic-rich-text-editor-active-emoji-tab-color: #2AB27B;
+$classic-at-mention-text-bg: #D3E1EB;
+$classic-rich-text-tooltip-box-shadow: 0 0 5px $border-color;
+$dark-theme-classic-rich-text-tooltip-box-shadow: 0px 2px 3px $dark-theme-body-bg-color;
+$theme-rich-text-toolbar-bg: 'theme-rich-text-toolbar-bg';
+$theme-rich-text-toolbar-active-bg: 'theme-rich-text-toolbar-active-bg';
+$theme-rich-text-picker-color: 'theme-rich-text-picker-color';
+$theme-rich-text-icon: 'theme-rich-text-icon';
+$theme-rich-text-tooltip-input-bg: 'theme-rich-text-tooltip-input-bg';
+$theme-rich-text-tooltip-box-shadow: 'theme-rich-text-tooltip-box-shadow';
+$theme-rich-text-tooltip-input-color: 'theme-rich-text-tooltip-input-color';
+$theme-at-mention-text-bg: 'theme-at-mention-text-bg';
+
+// Alert
+$dark-theme-danger-icon-color: #F44336;
+$dark-theme-danger-bg: #7A2D2A;
+$theme-danger-color: 'theme-danger-color';
+$theme-danger-bg: 'theme-danger-bg';
+$theme-danger-icon-color: 'theme-danger-icon-color';
+
+$dark-theme-warning-icon-color: #FF9800;
+$dark-theme-warning-color: #FF9800;
+$dark-theme-warning-bg: #6D4610;
+$theme-warning-color: 'theme-warning-color';
+$theme-text-on-warning-bg: 'theme-text-on-warning-bg';
+$theme-warning-bg: 'theme-warning-bg';
+$theme-warning-icon-color: 'theme-warning-icon-color';
+
+$dark-theme-light-bg: $dark-theme-secondary-background-color;
+$theme-light-color: 'theme-light-color';
+$theme-light-bg: 'theme-light-bg';
+
+$dark-theme-success-icon-color: #4CAF50;
+$dark-theme-success-bg: #275827;
+$theme-success-color: 'theme-success-color';
+$theme-custom-success-color: 'theme-custom-success-color';
+$theme-success-bg: 'theme-success-bg';
+$theme-success-icon-color: 'theme-success-icon-color';
+
+$dark-theme-info-icon-color: #2196F3;
+$dark-theme-info-bg: #003155;
+$theme-info-color: 'theme--info-color';
+$theme-info-bg: 'theme--info-bg';
+$theme-info-icon-color: 'theme-info-icon-color';
+
+// Select2
+$select2-dropdown-open-arrow-color: transparent transparent $icon-color transparent !important;
+$dark-theme-select2-dropdown-open-arrow-color: transparent transparent $dark-theme-icon-color transparent !important;
+$theme-select2-dropdown-open-arrow-color: 'theme-select2-dropdown-open-arrow-color';
+
+// Multiselect
+$multiselect-btn-bg: #E8E8E8;
+$dark-theme-multiselect-selected-bg: #333;
+$dark-theme-multiselect-btn-bg: #4A4A4C;
+$theme-multiselect-btn-bg: 'theme-multiselect-btn-bg';
+$theme-multiselect-selected-bg: 'theme-multiselect-selected-bg';
+
+// Toggle button
+$theme-switch-toggle-circle-bg: #606060;
+$theme-theme-switch-toggle-circle-bg: 'theme-theme-switch-toggle-circle-bg';
+$theme-theme-switch-toggle-bg: 'theme-theme-switch-toggle-bg';
+
+// Search Clear button
+$classic-btn-clear-search-box-shadow: inset -1px 0px 0 1px rgba(0, 0, 0, 0.1) !important;
+$dark-theme-classic-btn-clear-search-box-shadow: inset -1px 0px 0 1px $dark-theme-secondary !important;
+$btn-clear-search-text-shadow: 0 1px 0 $white;
+$dark-theme-btn-clear-search-text-shadow: 0 1px 0 $black;
+
+$theme-btn-clear-search-bg: 'theme-btn-clear-search-bg';
+$theme-btn-clear-search-text-shadow: 'theme-btn-clear-search-text-shadow';
+
+$theme-search-footer-bg: 'theme-search-footer-bg';
+
+// Table
+$table-color: $ash-color;
+$dark-theme-table-color: $dark-theme-foreground-color;
+$table-hover-border-color: #383838;
+$dark-theme-table-hover-border-color: $dark-theme-secondary;
+
+$dark-theme-table-header-bg: #505050;
+$theme-table-header-bg: 'theme-table-header-bg';
+$theme-table-with-caption-color: 'theme-table-with-caption-color';
+
+// Pagination
+$theme-page-link-hover-bg: 'theme-page-link-hover-bg';
+
+// File Upload
+$theme-file-upload-label-hover-color: 'theme-file-upload-label-hover-color';
+
+// Secondary Topbar
+$theme-secondary-navbar-nav-link-color: 'theme-secondary-navbar-nav-link-color';
+$theme-item-card-title-bg: 'theme-item-title-bg';
+$theme-item-card-title-color: 'theme-item-title-color';
+
+// Radio
+$theme-radio-unselected-border: 'theme-radio-unselected-border';
+$theme-radio-unselected-bg: 'theme-radio-unselected-bg';
+$theme-radio-disabled-border: 'theme-radio-disabled-border';
+
+// Ideascale Sidebar
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 50px;
+$sidebar-footer-height: 40px;
+$dark-theme-sidebar-menu-header-open-hover-bg: #5C5C5F;
+$sidebar-menu-open-bg: $dark-theme-foreground-color;
+$theme-sidebar-menu-header-open-hover-bg: 'theme-sidebar-menu-header-open-hover-bg';
+$theme-sidebar-item-active-hover-bg: 'theme-sidebar-item-active-hover-bg';
+
+// Groups Display
+$theme-group-display-bg: 'theme-group-display-bg';
+
+// Scrollbar
+$scrollbar-width: 6px;
+$theme-scrollbar-thumb-bg: 'theme-scrollbar-thumb-bg';
+
+// nav-tabs
+$theme-nav-tab-active-hover-bg: 'theme-nav-tab-active-hover-bg';
+$dark-theme-nav-tab-active-hover-bg: #4A4A4C;
+
+//list-items
+$theme-list-item-selected-bg: 'theme-list-item-selected-bg';
+
+$zindex-modal-dropdown: $zindex-modal;
+
+$light-theme-colors: (
+        $theme-primary: $primary,
+        $theme-primary-text: $primary,
+        $theme-secondary: $white,
+        $theme-background-color: $white,
+        $theme-secondary-background-color: $white,
+        $theme-foreground-color: $ash-color,
+        $theme-sr-only-background-color: $white,
+        $theme-sr-only-color: $black,
+        $theme-body-background-color: $body-bg-color,
+        $theme-bg-gray: $bg-gray,
+        $theme-border-color: $border-color,
+        $theme-custom-panel-bg: $white-smoke,
+        $theme-panel-bg: $white,
+        $theme-panel-default-header-bg: $white-smoke,
+        $theme-classic-link-color: $classic-link-color,
+        $theme-classic-link-visited-color: $classic-link-visited-color,
+        $theme-classic-link-hover-color: $classic-link-hover-color,
+        $theme-icon-color: $icon-color,
+        $theme-icon-active-color: $icon-active-color,
+        $theme-input-bg: $input-bg,
+        $theme-input-placeholder-color: $granite,
+        $theme-input-color: $body-color,
+        $theme-input-border-color: $border-gray,
+        $theme-input-group-input-box-shadow: $input-group-input-box-shadow,
+        $theme-tag-bg: $white,
+        $theme-tag-color: $body-color,
+        $theme-tag-selected-bg: $lavender,
+        $theme-tag-badge-color: $white,
+        $theme-tag-badge-border: $white,
+        $theme-dropdown-color: $dropdown-color,
+        $theme-dropdown-bg: $dropdown-bg,
+        $theme-dropdown-divider-bg: $dropdown-divider-bg,
+        $theme-dropdown-link-color: $dropdown-link-color,
+        $theme-dropdown-link-hover-color: $dropdown-link-hover-color,
+        $theme-dropdown-link-hover-bg: $dropdown-link-hover-bg,
+        $theme-dropdown-item-hover-bg: $dropdown-link-hover-bg,
+        $theme-dropdown-link-active-color: $dropdown-link-active-color,
+        $theme-dropdown-link-active-bg: $dropdown-link-active-bg,
+        $theme-dropdown-link-disabled-color: $dropdown-link-disabled-color,
+        $theme-dropdown-header-color: $dropdown-header-color,
+        $theme-dropdown-header-bg: $gray-light,
+        $theme-triangle-color: $triangle-color,
+        $theme-popover-header-bg: $white,
+        $theme-popover-body-bg: $white,
+        $theme-popover-arrow-bg: $white,
+        $theme-popover-border-color: $popover-border-color,
+        $theme-input-group-append-prepend-bg: $input-group-append-prepend-bg,
+        $theme-input-group-append-box-shadow: $input-group-append-box-shadow,
+        $theme-input-group-prepend-box-shadow: $input-group-prepend-box-shadow,
+        $theme-error-input-text-color: $red-orange,
+        $theme-checkbox-border-color: $granite,
+        $theme-form-custom-panel-border: $classic-form-custom-panel-border,
+        $theme-error: $error-red-dark,
+        $theme-custom-panel-header-bg: $white-smoke,
+        $theme-skeleton-default-background: $skeleton-default-bg,
+        $theme-skeleton-background-image: $skeleton-background-image,
+        $theme-app-loader-color: $app-loader-color,
+        $theme-switch-bg: $classic-switch-bg,
+        $theme-switch-color: $white,
+        $theme-close-icon-color: $classic-close-icon-color,
+        $theme-close-icon-shadow-color: $white,
+        $theme-text-gray: $text-gray,
+        $theme-text-muted: $text-muted,
+        $theme-text-disabled: $text-disabled,
+        $theme-text-emphasize-color: $classic-text-emphasize-color,
+        $theme-text-emphasize-hover-color: $classic-text-emphasize-hover-color,
+        $theme-btn-secondary-bg: $blue-light,
+        $theme-btn-secondary-color: $primary,
+        $theme-btn-gray-bg: $gainsboro,
+        $theme-btn-gray-color: $charcoal,
+        $theme-btn-light-bg: $white-smoke,
+        $theme-btn-light-color: $charcoal,
+        $theme-btn-link-secondary: $btn-link-secondary-color,
+        $theme-rc-slider-mark-NA-color: $granite,
+        $theme-info-tip-color: $white,
+        $theme-info-tip-text: $spanish-gray,
+        $theme-datepicker-border-color: $whisper,
+        $theme-datepicker-color: $black,
+        $theme-datepicker-selected-color: $white,
+        $theme-datepicker-in-range-bg: $whisper,
+        $theme-datepicker-in-range-border: $whisper,
+        $theme-datepicker-icon-bg: $rs-gray,
+        $theme-datepicker-icon-color: $rs-gray,
+        $theme-datepicker-box-shadow: $classic-datepicker-box-shadow,
+        $theme-datepicker-in-range-box-shadow: $classic-datepicker-in-range-box-shadow,
+        $theme-datepicker-multi-month-box-shadow: $classic-datepicker-multi-month-box-shadow,
+        $theme-datepicker-date-up-down-arrow-img: $classic-date-up-down-arrow-img,
+        $theme-datepicker-arrow-bg: $black,
+        $theme-prev-next-month-day-color: $classic-prev-next-month-day-color,
+        $theme-rc-slider-handle-bg: $ash-color,
+        $theme-progressbar-bg: $chinese-silver,
+        $theme-flash-start-bg: $classic-flash-start-bg,
+        $theme-flash-end-bg: $classic-flash-end-bg,
+        $theme-label-dropdown-arrow: $black,
+        $theme-rich-text-toolbar-bg: $toolbar-bg-color,
+        $theme-rich-text-toolbar-active-bg: $neutral,
+        $theme-rich-text-picker-color: $gray,
+        $theme-rich-text-icon: $granite,
+        $theme-rich-text-tooltip-input-bg: $white,
+        $theme-rich-text-tooltip-input-color: $black,
+        $theme-rich-text-tooltip-box-shadow: $classic-rich-text-tooltip-box-shadow,
+        $theme-at-mention-text-bg: $input-bg,
+        $theme-danger-color: $danger-color,
+        $theme-danger-bg: $danger-bg,
+        $theme-warning-color: $warning-color,
+        $theme-text-on-warning-bg: $warning-color,
+        $theme-warning-bg: $warning-bg,
+        $theme-light-color: $light-color,
+        $theme-light-bg: $light-bg,
+        $theme-success-color: $success-color,
+        $theme-success-bg: $success-bg,
+        $theme-custom-success-color: $custom-green-3,
+        $theme-info-color: $info-color,
+        $theme-info-bg: $info-bg,
+        $theme-danger-icon-color: $red-dark,
+        $theme-warning-icon-color: $yellow-dark,
+        $theme-success-icon-color: $green-dark,
+        $theme-info-icon-color: $blue-dark,
+        $theme-select2-dropdown-open-arrow-color: $select2-dropdown-open-arrow-color,
+        $theme-multiselect-btn-bg: $multiselect-btn-bg,
+        $theme-multiselect-selected-bg: $lavender,
+        $theme-theme-switch-toggle-circle-bg: $theme-switch-toggle-circle-bg,
+        $theme-theme-switch-toggle-bg: $rs-gray,
+        $theme-btn-clear-search-bg: $solitude,
+        $theme-btn-clear-search-text-shadow: $btn-clear-search-text-shadow,
+        $theme-search-footer-bg: $white,
+        $theme-warning-bg-weak: $warning-bg-weak,
+        $theme-warning-bg-strong: $warning-bg-strong,
+        $theme-page-link-hover-bg: $is-gray,
+        $theme-table-header-bg: $gray-light,
+        $theme-table-with-caption-color: $white,
+        $theme-file-upload-label-hover-color: $gray,
+        $theme-secondary-navbar-nav-link-color: $gray,
+        $theme-item-card-title-bg: $gray-light,
+        $theme-item-card-title-color: $body-color,
+        $theme-radio-unselected-border: $charcoal,
+        $theme-radio-unselected-bg: $white,
+        $theme-radio-disabled-border: $dark-theme-gray,
+        $theme-sidebar-menu-header-open-hover-bg: $sidebar-menu-open-bg,
+        $theme-sidebar-item-active-hover-bg: $lavender,
+        $theme-group-display-bg: $whisper,
+        $theme-see-more-color: $see-more-color,
+        $theme-scrollbar-thumb-bg: $scroll-thumb-color,
+        $theme-nav-tab-active-hover-bg: $lavender,
+        $theme-ideascale-custom-radio-hover-bg: $light-white,
+        $theme-custom-border-color: $chinese-silver,
+        $theme-btn-danger: $error-red-dark,
+        $theme-btn-danger-color: $white,
+        $theme-text-danger-secondary: $error-red-dark,
+        $theme-btn-secondary-danger-bg: $error-light,
+        $theme-btn-secondary-danger-hover-bg: $error-light-hover,
+        $theme-btn-secondary-danger-color: $error-red-dark,
+        $theme-input-disabled-bg: $gray-200,
+        $theme-btn-secondary-primary-bg: $lavender,
+        $theme-btn-secondary-primary-hover-bg: darken($lavender,15%),
+        $theme-btn-secondary-primary-color: $primary,
+        $theme-list-item-selected-bg: $gray-light,
+        $theme-bg-hover-gray: $white-smoke,
+) !default;
+
+
+$dark-theme-colors: (
+        $theme-primary: $dark-theme-primary,
+        $theme-primary-text: $dark-theme-primary-text,
+        $theme-secondary: $dark-theme-secondary,
+        $theme-background-color: $dark-theme-background-color,
+        $theme-secondary-background-color: $dark-theme-secondary-background-color,
+        $theme-foreground-color: $dark-theme-foreground-color,
+        $theme-sr-only-background-color: $black,
+        $theme-sr-only-color: $white,
+        $theme-body-background-color: $dark-theme-body-bg-color,
+        $theme-bg-gray: $dark-theme-secondary,
+        $theme-border-color: $dark-theme-border-color,
+        $theme-custom-panel-bg: $dark-theme-body-bg-color,
+        $theme-panel-bg: $dark-theme-background-color,
+        $theme-panel-default-header-bg: $dark-theme-secondary,
+        $theme-classic-link-color: $dark-theme-classic-link-color,
+        $theme-classic-link-visited-color: $dark-theme-classic-link-visited-color,
+        $theme-classic-link-hover-color: $dark-theme-classic-link-hover-color,
+        $theme-icon-color: $dark-theme-icon-color,
+        $theme-icon-active-color: $dark-theme-icon-active-color,
+        $theme-input-bg: $dark-theme-input-bg,
+        $theme-input-placeholder-color: $dark-theme-placeholder-color,
+        $theme-input-color: $dark-theme-foreground-color,
+        $theme-input-border-color: $dark-theme-input-border-color,
+        $theme-input-group-input-box-shadow: $dark-theme-input-group-input-box-shadow,
+        $theme-tag-bg: $dark-theme-background-color,
+        $theme-tag-color: $dark-theme-foreground-color,
+        $theme-tag-selected-bg: $dark-theme-tag-selected-bg,
+        $theme-tag-badge-color: $dark-theme-foreground-color,
+        $theme-tag-badge-border: $spanish-gray,
+        $theme-dropdown-color: $dark-theme-dropdown-color,
+        $theme-dropdown-bg: $dark-theme-dropdown-bg,
+        $theme-dropdown-divider-bg: $dark-theme-dropdown-divider-bg,
+        $theme-dropdown-link-color: $dark-theme-dropdown-link-color,
+        $theme-dropdown-link-hover-color: $dark-theme-dropdown-link-hover-color,
+        $theme-dropdown-link-hover-bg: $dark-theme-dropdown-link-hover-bg,
+        $theme-dropdown-item-hover-bg: $dark-theme-dropdown-item-hover-bg,
+        $theme-dropdown-link-active-color: $dark-theme-dropdown-link-active-color,
+        $theme-dropdown-link-active-bg: $dark-theme-dropdown-link-active-bg,
+        $theme-dropdown-link-disabled-color: $dark-theme-dropdown-link-disabled-color,
+        $theme-dropdown-header-color: $dark-theme-dropdown-header-color,
+        $theme-dropdown-header-bg: $dark-theme-secondary-background-color,
+        $theme-triangle-color: $dark-theme-triangle-color,
+        $theme-popover-header-bg: $dark-theme-popover-header-bg,
+        $theme-popover-body-bg: $dark-theme-popover-body-bg,
+        $theme-popover-arrow-bg: $dark-theme-popover-body-bg,
+        $theme-popover-border-color: $dark-theme-popover-body-bg,
+        $theme-input-group-append-prepend-bg: $dark-theme-input-group-append-prepend-bg,
+        $theme-input-group-append-box-shadow: $dark-theme-input-group-append-box-shadow,
+        $theme-input-group-prepend-box-shadow: $dark-theme-input-group-prepend-box-shadow,
+        $theme-error-input-text-color: $eclipse,
+        $theme-checkbox-border-color: $dark-theme-checkbox-border-color,
+        $theme-form-custom-panel-border: $dark-theme-border-color,
+        $theme-error: $custom-red-6,
+        $theme-custom-panel-header-bg: $dark-theme-secondary,
+        $theme-skeleton-default-background: $dark-theme-skeleton-default-bg,
+        $theme-skeleton-background-image: $dark-theme-skeleton-background-image,
+        $theme-app-loader-color: $dark-theme-app-loader-color,
+        $theme-switch-bg: $dark-theme-secondary-background-color,
+        $theme-switch-color: $dark-theme-foreground-color,
+        $theme-close-icon-color: $dark-theme-foreground-color,
+        $theme-close-icon-shadow-color: $dark-theme-background-color,
+        $theme-text-gray: $serene-grey,
+        $theme-text-disabled: $serene-grey,
+        $theme-text-emphasize-color: $dark-theme-foreground-color,
+        $theme-text-emphasize-hover-color: $serene-grey,
+        $theme-text-muted: $dark-theme-text-muted,
+        $theme-btn-secondary-bg: $dark-theme-btn-secondary-bg,
+        $theme-btn-secondary-color: $dark-theme-btn-secondary-color,
+        $theme-btn-gray-bg: $dark-theme-btn-secondary-bg,
+        $theme-btn-gray-color: $dark-theme-btn-secondary-color,
+        $theme-btn-light-bg: $dark-theme-btn-secondary-bg,
+        $theme-btn-light-color: $dark-theme-btn-secondary-color,
+        $theme-btn-link-secondary: $dark-theme-foreground-color,
+        $theme-rc-slider-mark-NA-color: $serene-grey,
+        $theme-info-tip-color: $dark-theme-foreground-color,
+        $theme-info-tip-text: $serene-grey,
+        $theme-datepicker-border-color: $dark-theme-secondary,
+        $theme-datepicker-color: $dark-theme-foreground-color,
+        $theme-datepicker-selected-color: $dark-theme-foreground-color,
+        $theme-datepicker-in-range-bg: $dark-theme-secondary,
+        $theme-datepicker-in-range-border: $dark-theme-secondary,
+        $theme-datepicker-icon-bg: $dark-theme-gray,
+        $theme-datepicker-icon-color: $serene-grey,
+        $theme-datepicker-box-shadow: $dark-theme-classic-datepicker-box-shadow,
+        $theme-datepicker-in-range-box-shadow: $dark-theme-classic-datepicker-in-range-box-shadow,
+        $theme-datepicker-multi-month-box-shadow: $dark-theme-classic-datepicker-multi-month-box-shadow,
+        $theme-datepicker-date-up-down-arrow-img: $dark-theme-classic-date-up-down-arrow-img,
+        $theme-datepicker-arrow-bg: $dark-theme-foreground-color,
+        $theme-prev-next-month-day-color: $dark-theme-classic-prev-next-month-day-color,
+        $theme-rc-slider-handle-bg: $gray,
+        $theme-progressbar-bg: $dark-theme-secondary-background-color,
+        $theme-flash-start-bg: $dark-theme-classic-flash-start-bg,
+        $theme-flash-end-bg: $dark-theme-classic-flash-end-bg,
+        $theme-label-dropdown-arrow: $dark-theme-gray,
+        $theme-rich-text-toolbar-bg: $dark-theme-toolbar-bg-color,
+        $theme-rich-text-toolbar-active-bg: $neutral-dark,
+        $theme-rich-text-picker-color: $dark-theme-foreground-color,
+        $theme-rich-text-icon: $dark-theme-gray,
+        $theme-rich-text-tooltip-input-bg: $ash-color,
+        $theme-rich-text-tooltip-input-color: $dark-theme-foreground-color,
+        $theme-rich-text-tooltip-box-shadow: $dark-theme-classic-rich-text-tooltip-box-shadow,
+        $theme-at-mention-text-bg: $dark-theme-input-bg,
+        $theme-danger-color: $dark-theme-foreground-color,
+        $theme-danger-bg: $dark-theme-danger-bg,
+        $theme-warning-color: $dark-theme-warning-color,
+        $theme-text-on-warning-bg: $warning-bg,
+        $theme-warning-bg: $dark-theme-warning-bg,
+        $theme-light-color: $dark-theme-foreground-color,
+        $theme-light-bg: $dark-theme-light-bg,
+        $theme-success-color: $dark-theme-foreground-color,
+        $theme-success-bg: $dark-theme-success-bg,
+        $theme-custom-success-color: $green,
+        $theme-info-color: $dark-theme-foreground-color,
+        $theme-info-bg: $dark-theme-info-bg,
+        $theme-danger-icon-color: $dark-theme-danger-icon-color,
+        $theme-warning-icon-color: $dark-theme-warning-icon-color,
+        $theme-success-icon-color: $dark-theme-success-icon-color,
+        $theme-info-icon-color: $dark-theme-info-icon-color,
+        $theme-select2-dropdown-open-arrow-color: $dark-theme-select2-dropdown-open-arrow-color,
+        $theme-multiselect-btn-bg: $dark-theme-multiselect-btn-bg,
+        $theme-multiselect-selected-bg: $dark-theme-multiselect-selected-bg,
+        $theme-theme-switch-toggle-circle-bg: $white,
+        $theme-theme-switch-toggle-bg: $rs-gray,
+        $theme-btn-clear-search-bg: $dark-theme-input-bg,
+        $theme-btn-clear-search-text-shadow: $dark-theme-btn-clear-search-text-shadow,
+        $theme-search-footer-bg: $dark-theme-body-bg-color,
+        $theme-warning-bg-weak: $dark-theme-warning-bg-weak,
+        $theme-warning-bg-strong: $dark-theme-warning-bg-strong,
+        $theme-page-link-hover-bg: $dark-theme-secondary,
+        $theme-table-header-bg: $dark-theme-table-header-bg,
+        $theme-table-with-caption-color: $dark-theme-foreground-color,
+        $theme-file-upload-label-hover-color: $serene-grey,
+        $theme-secondary-navbar-nav-link-color: $dark-theme-foreground-color,
+        $theme-item-card-title-bg: $dark-theme-secondary-background-color,
+        $theme-item-card-title-color: $dark-theme-secondary-color,
+        $theme-radio-unselected-border: $dark-theme-gray,
+        $theme-radio-unselected-bg: $ash-color,
+        $theme-radio-disabled-border: $gray,
+        $theme-sidebar-menu-header-open-hover-bg: $dark-theme-sidebar-menu-header-open-hover-bg,
+        $theme-sidebar-item-active-hover-bg: $dark-theme-secondary,
+        $theme-group-display-bg: $dark-theme-secondary-background-color,
+        $theme-see-more-color: $dark-theme-foreground-color,
+        $theme-scrollbar-thumb-bg: $dark-theme-scroll-thumb-color,
+        $theme-nav-tab-active-hover-bg: $dark-theme-nav-tab-active-hover-bg,
+        $theme-ideascale-custom-radio-hover-bg: $dark-theme-tag-selected-bg,
+        $theme-custom-border-color: $dark-theme-custom-border-color,
+        $theme-btn-danger: $custom-red-2,
+        $theme-btn-danger-color: $dark-theme-foreground-color,
+        $theme-text-danger-secondary: $custom-red-7,
+        $theme-btn-secondary-danger-bg: $custom-red-2,
+        $theme-btn-secondary-danger-hover-bg: $custom-red-1,
+        $theme-btn-secondary-danger-color: $white,
+        $theme-input-disabled-bg: $dark-theme-disabled-input-bg,
+        $theme-btn-secondary-primary-bg: $primary,
+        $theme-btn-secondary-primary-hover-bg: darken($primary,10%),
+        $theme-btn-secondary-primary-color: $white,
+        $theme-list-item-selected-bg: $dark-theme-item-selected-bg,
+        $theme-bg-hover-gray: $dark-theme-secondary,
+) !default;
+
+$themes: (
+        $light-theme: $light-theme-colors,
+        $dark-theme: $dark-theme-colors
+) !default;

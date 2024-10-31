@@ -1,12 +1,7 @@
 import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef,} from 'react';
-// import {Sources} from 'quill';
-// import ReactQuill, {Quill, Range, UnprivilegedEditor} from 'react-quill-new';
-// import ReactQuill, {Quill, EmitterSource,} from 'react-quill-new';
 import ReactQuill from 'react-quill-new';
 import Quill, {type EmitterSource, type Range as RangeStatic} from 'quill';
 import QuillMarkdown from './quill-markdown/QuillMarkdown';
-// import 'quill-emoji/dist/quill-emoji';
-// import 'quill-mention';
 import QuillImageDropAndPaste, {ImageData} from 'quill-image-drop-and-paste';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -31,8 +26,6 @@ import {ClassificationModule} from './modules/ClassificationModule';
 import {RichTextClassificationConfig} from './RichTextClassificationConfig';
 import {ToolbarType} from './ToolbarType';
 import type DeltaStatic from 'quill-delta';
-
-//Emoji Picker
 import EmojiBlot from './blots/EmojiBlot';
 import EmojiModule from './modules/emoji/EmojiModule';
 import ToolbarEmoji from './modules/emoji/EmojiToolbar';
@@ -41,6 +34,8 @@ import {LinkFormatModule} from './modules/LinkFormatModule';
 import {Emoji} from './quill-emoji/EmojiList';
 import {MentionUser} from "./MentionUser.ts";
 import {RichTextEditorHandler} from "./RichTextEditorHandler.ts";
+import {Mention, MentionBlot} from "quill-mention";
+// import {ImageUploadAndLinkModal} from "./ImageUploadAndLinkModal.tsx";
 
 interface UnprivilegedEditor {
     getLength: Quill['getLength'];
@@ -73,6 +68,7 @@ Quill.register('modules/linkFormat', LinkFormatModule, true);
 Quill.register('modules/emoji-shortname', EmojiModule, true);
 Quill.register('modules/emoji-toolbar', ToolbarEmoji, true);
 Quill.register('modules/emoji-textarea', TextAreaEmoji, true);
+Quill.register({"blots/mention": MentionBlot, "modules/mention": Mention});
 
 const TOOLBAR_CONFIGURATIONS = {
     default: [
@@ -166,7 +162,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         maxCharacterLimit = Infinity,
         toolbar = 'minimal',
         enableEmojiPicker = true,
-        enableAtMention = false,
+        enableAtMention = true,
         offensiveEmojis: offensiveEmojiProps,
         characterLeftLabel = '',
         fetchMentionUsers,
@@ -218,9 +214,9 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         if (enableEmojiPicker) {
             formats.push('emoji');
         }
-        // if (enableAtMention) {
-        //     formats.push('mention');
-        // }
+        if (enableAtMention) {
+            formats.push('mention');
+        }
         if (classificationConfig?.enabled) {
             formats.push(ClassificationBlot.blotName);
         }
@@ -257,7 +253,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             },
             blockquote(value: any) {
                 quillRef.current?.editor?.format('blockquote', value);
-                const resizeModule = quillRef.current?.editor?.getModule('resize')as QuillResize;
+                const resizeModule = quillRef.current?.editor?.getModule('resize') as QuillResize;
                 resizeModule?.repositionElements();
             },
             strike(value: any) {
@@ -283,7 +279,9 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             source: async (searchTerm: string, renderList: Function, _mentionChar: string) => {
                 if (fetchMentionUsers) {
                     const matchedPeople = await fetchMentionUsers(searchTerm);
-                    renderList(matchedPeople.map(people => ({...people, value: `@${people.username}`})));
+                    // renderList(matchedPeople.map(people => ({...people, value: `@${people.username}`})));
+                    renderList(matchedPeople.map(people => ({...people, value: `@${people.name}`})));
+                    // renderList(matchedPeople, searchTerm);
 
                     const mentionListContainerElement = document.querySelectorAll('.ql-mention-list-container');
                     if (mentionListContainerElement && mentionListContainerElement.length > 0) {
@@ -297,18 +295,30 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             onSelect: (item: any, insertItem: Function) => {
                 const totalCharsLength = (quillRef.current?.editor?.getModule('maxCharsLimit') as MaxCharsLimitModule).totalCharsLength;
                 if (totalCharsLength + item.value.length + 3 < maxCharacterLimit) {
-                    insertItem(item, true);
+                    insertItem(item);
                 }
             },
-            renderItem: (item: any) => {
-                return `<div class="d-flex align-items-center py-2">
-                    <img src="${item.avatar}" class="avatar avatar-sm" alt="${item.username} avatar"/>
-                    <div class="d-flex flex-column justify-content-center align-items-start ms-2">
-                        <span class="fw-bold text-truncate mention-name">${item.name}</span>
-                        <span>@${item.username}</span>
-                    </div>
-                </div>
-                `;
+            renderItem: (item: { id: string; value: string; [key: string]: any }) => {
+                const container = document.createElement('div');
+                container.className = 'd-flex align-items-center py-2';
+                const img = document.createElement('img');
+                img.src = item.avatar;
+                img.className = 'avatar avatar-sm';
+                img.alt = `${item.username} avatar`;
+                const innerContainer = document.createElement('div');
+                innerContainer.className = 'd-flex flex-column justify-content-center align-items-start ms-2';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'fw-bold text-truncate mention-name';
+                nameSpan.textContent = item.name;
+
+                const usernameSpan = document.createElement('span');
+                usernameSpan.textContent = `@${item.username}`;
+                innerContainer.appendChild(nameSpan);
+                innerContainer.appendChild(usernameSpan);
+                container.appendChild(img);
+                container.appendChild(innerContainer);
+                return container;
             }
         };
     }, [fetchMentionUsers, maxCharacterLimit]);
@@ -335,7 +345,6 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         } else if (parent.classList.contains('modal')) {
             return focusableElements[0] as HTMLElement;
         }
-
         return null;
     };
 
@@ -356,7 +365,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             }
         }
         return true;
-    },[]);
+    }, []);
 
     const addEmbeddedImage = (url: string, altText?: string) => {
         if (quillRef.current && quillRef.current.getEditor()) {
@@ -431,22 +440,6 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         imageDropAndPaste: {
             handler: imagePasteHandler
         },
-        // 'emoji-toolbar': false,
-        // 'emoji-shortname': {
-        //     emojiList: (emojiList as Emoji[]).filter(item => !offensiveEmojis.includes(item.shortname)),
-        //     fuse: {
-        //         shouldSort: true,
-        //         threshold: 0.1,
-        //         location: 0,
-        //         distance: 100,
-        //         maxPatternLength: 32,
-        //         minMatchCharLength: 1,
-        //         keys: ['shortname']
-        //     }
-        // },
-        // 'emoji-textarea': enableEmojiPicker,
-
-        // 'emoji':true,
         'emoji-toolbar': true,
         'emoji-shortname': enableEmojiPicker ? {
             emojiList: offensiveEmojis.length > 0 ? (emojiList as Emoji[]).filter(item => !offensiveEmojis.includes(item.shortname)) : emojiList,
@@ -462,7 +455,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         } : false,
         'emoji-textarea': enableEmojiPicker,
         'counter': characterLeftLabel && {maxCharacter: maxCharacterLimit, label: characterLeftLabel},
-        // mention: enableAtMention ? getMentionConfiguration() : false,
+        mention: enableAtMention ? getMentionConfiguration() : false,
         markdownShortcuts: {},
         classificationModule: {configData: classificationConfig},
         maxCharsLimit: (maxCharacterLimit || characterLeftLabel) && {maxCharacters: maxCharacterLimit},
@@ -720,39 +713,20 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 onChangeSelection={onChangeSelection}
             />
 
-            {/*<ReactQuill*/}
-            {/*    id={id}*/}
-            {/*    ref={quillRef}*/}
-            {/*    placeholder={placeholder}*/}
-            {/*    className={`new-rich-text-editor ${readonly ? 'readonly' : ''} ${className}`}*/}
-            {/*    // modules={modules}*/}
-            {/*    // formats={getFormats}*/}
-            {/*    theme="snow"*/}
-            {/*    defaultValue={getDefaultValue()}*/}
-            {/*    readOnly={readonly}*/}
-            {/*    tabIndex={tabIndex}*/}
-            {/*    onChange={(value, delta, source, editor) => onChangeEvent(value, delta, source, editor)}*/}
-            {/*    onBlur={onBlur}*/}
-            {/*    onFocus={onFocus}*/}
-            {/*    onChangeSelection={onChangeSelection}*/}
-            {/*/>*/}
-            {/*<ReactQuill theme="snow" value={value} onChange={setValue} />*/}
-
             {/*{*/}
             {/*    imageUploadModalOpen &&*/}
             {/*    <ImageUploadAndLinkModal*/}
             {/*        open={imageUploadModalOpen}*/}
             {/*        toggle={toggleImageModal}*/}
-            {/*        svgIconPath={svgIconPath}*/}
-            {/*        existingAttachments={existingAttachments}*/}
+            {/*        svgIconPath={''}*/}
+            {/*        existingAttachments={[]}*/}
             {/*        onSelectAttachment={(attachment, altText) => {*/}
             {/*            addEmbeddedImage(attachment, altText);*/}
             {/*        }}*/}
             {/*        getQuill={() => quillRef.current?.getEditor()}*/}
             {/*        uploadImage={uploadImage}*/}
-            {/*        maxFileSize={maxFileSize}*/}
             {/*        externalFileBasePath={externalFileBasePath}*/}
-            {/*        enableExternalImageEmbedOption={enableExternalImageEmbedOption}*/}
+            {/*        enableExternalImageEmbedOption={false}*/}
             {/*    />*/}
             {/*}*/}
         </section>

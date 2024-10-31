@@ -1,0 +1,95 @@
+@use "sass:math";
+@import "~bootstrap/scss/variables";
+
+$font-family-base: 'Inter', Helvetica, Arial, sans-serif;
+
+$body-color: #333;
+
+$nav-tabs-border-color: #d3d3d3;
+
+$white: #fff;
+$red: #BF2C04;
+$green: #0B9979;
+$violet: #C329E3;
+$primary: #384EC1;
+$blue: $primary;
+$link-color: $primary;
+
+$theme-colors: map-merge(
+                $theme-colors,
+                (
+                        "primary": $primary,
+                        "info": #3EE0BA,
+                        "warning": #EA7F28,
+                        "success": $green,
+                        "danger": $red,
+                        "violet": $violet
+                )
+);
+
+$border-radius: 4px;
+$border-radius-sm: 2px;
+$enable-shadows: true;
+$enable-validation-icons: false; // we don't want the feedback icons for valid/invalid fields
+
+$badge-font-size: 11px;
+$badge-font-weight: 500;
+$badge-padding-x: .286rem;
+$badge-padding-y: .143rem;
+
+$modal-inner-padding: math.div(24, 14) * 1rem;
+$modal-header-padding-y: $modal-inner-padding;
+$modal-header-padding-x: $modal-inner-padding;
+$modal-inner-padding-sm: math.div(8, 14) * 1rem;
+
+$tooltip-arrow-width: 10px;
+$tooltip-max-width: 300px;
+
+$btn-box-shadow: 0 0 #fff; /* cannot use "none", otherwise certain multiple-shadow rules (like for :focus) will be invalid */
+$btn-active-box-shadow: 0 0 #fff; /* cannot use "none", otherwise certain multiple-shadow rules (like for :focus) will be invalid */
+
+$alert-border-radius: 0;
+
+$input-bg: #FCFCFC;
+$input-border-color: #D2D4DB;
+$input-border-radius: .143rem;
+$input-border-radius-sm: $input-border-radius;
+$input-border-radius-lg: $input-border-radius;
+$input-box-shadow: 0 0 #fff; /* cannot use "none", otherwise certain multiple-shadow rules (like for :focus) will be invalid */
+$input-focus-box-shadow: 0 0 0 .15rem rgba($primary, .25);
+$input-focus-border-color: $primary;
+$input-fi-focus-width: .15rem;
+
+$custom-checkbox-indicator-border-radius: $input-border-radius;
+
+$dropdown-link-color: $body-color;
+$dropdown-link-hover-bg: #ebebeb;
+$dropdown-link-active-bg: $dropdown-link-hover-bg;
+$dropdown-link-active-color: $primary;
+$dropdown-link-hover-color: $body-color;
+$dropdown-item-padding-y: 0.45rem;
+$dropdown-header-color: #696A6E;
+
+$table-hover-bg: #f6f7f9;
+
+$enable-negative-margins: true;
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+);
+$container-max-widths: (
+        sm: 540px,
+        md: 720px,
+        lg: 960px,
+        xl: 1140px
+);
+$grid-gutter-width: 30px;
+$container-padding-x: 30px;
+$form-label-margin-bottom: 0.5rem;
+$card-spacer-y: 1.25rem;
+$card-spacer-x: 1.25rem;
+$link-decoration: none;
+$link-hover-decoration: underline;

@@ -1,0 +1,348 @@
+//@use "~react-quill/dist/quill.snow";
+@use 'react-quill-new/dist/quill.snow.css';
+//@use "quill-mention/dist/quill.mention";
+@import "./variables";
+@import "./mixins";
+//@import "quill-emoji";
+
+.editor-thumbnails {
+  .selected-thumbnail {
+    img {
+      height: 350px;
+    }
+  }
+
+  .thumbnail {
+    &.selected {
+      img {
+        border: 3px solid $yellow;
+      }
+    }
+  }
+}
+
+.new-rich-text-editor {
+  padding: 0;
+
+  &.readonly {
+    .ql-toolbar {
+      display: none;
+    }
+  }
+
+  &:focus-within {
+    border: 1px solid;
+    @include theme('border-color', $theme-primary, false, '!important');
+  }
+
+  .ql-toolbar {
+    @include theme('background-color', $theme-rich-text-toolbar-bg);
+    font-family: $font-family-base;
+    @include border-top-radius($border-radius);
+
+    button {
+      margin-right: 0.25rem;
+      @include border-radius();
+
+      &.ql-active,
+      &:hover {
+        @include theme('background-color', $theme-rich-text-toolbar-active-bg);
+
+        .ql-stroke {
+          @include theme('stroke', $theme-rich-text-icon, false, '!important');
+        }
+
+        .ql-fill {
+          @include theme('fill', $theme-rich-text-icon, false, '!important');
+        }
+      }
+    }
+
+    .ql-picker {
+      @include theme('color', $theme-rich-text-picker-color);
+
+      &.ql-expanded {
+        @include theme('color', $theme-rich-text-picker-color);
+        @include theme('border-color', $theme-border-color);
+
+        .ql-picker-label {
+          border: none;
+          @include theme('color', $theme-foreground-color);
+
+          .ql-picker-label:hover {
+            border: none;
+          }
+
+          &.ql-stroke:hover {
+            @include theme('stroke', $theme-rich-text-icon);
+          }
+        }
+      }
+
+      .ql-picker-item:hover {
+        @include theme('color', $theme-primary-text);
+      }
+
+      .ql-picker-label {
+        &:hover,
+        &.ql-active {
+          @include theme('color', $theme-primary-text);
+
+          .ql-stroke {
+            @include theme('stroke', $theme-primary);
+          }
+        }
+      }
+
+      .ql-picker-options {
+        @include theme('border-color', $theme-border-color);
+        @include theme('background-color', $theme-body-background-color);
+
+        .ql-picker-item.ql-selected {
+          @include theme('color', $theme-primary-text);
+        }
+      }
+    }
+
+    .ql-stroke {
+      @include theme('stroke', $theme-rich-text-icon);
+    }
+
+    .ql-fill {
+      @include theme('fill', $theme-rich-text-icon);
+    }
+  }
+
+  .ql-editor {
+    font-family: $font-family-base;
+    font-size: $font-size-base-px;
+    height: auto;
+    min-height: $editor-min-height;
+    max-height: $editor-max-height;
+    @include theme('background-color', $theme-input-bg);
+    @include border-bottom-radius($border-radius);
+
+    &.ql-blank::before {
+      font-style: normal;
+      @include theme('color', $theme-input-placeholder-color);
+    }
+
+    resize: vertical;
+  }
+
+  .ql-tooltip {
+    padding: 11px 20px;
+    border-radius: $border-radius;
+    @include theme('background-color', $theme-background-color);
+    @include theme('color', $theme-foreground-color);
+    @include theme('border', $theme-border-color, true, '1px solid');
+    @include theme('box-shadow', $theme-rich-text-tooltip-box-shadow);
+
+    input[type='text'] {
+      border-radius: $border-radius;
+      @include theme('border', $theme-border-color, true, '1px solid');
+      @include theme('background-color', $theme-rich-text-tooltip-input-bg);
+      @include theme('color', $theme-rich-text-tooltip-input-color);
+
+      &:focus {
+        border: none;
+        outline: 1px solid rgba($primary, 0.5) !important;
+      }
+
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    .ql-editor {
+      @include border-top-radius($border-radius);
+    }
+  }
+
+  .ql-toolbar {
+    border: none !important;
+  }
+
+  .ql-container {
+    height: auto;
+    border: none !important;
+    word-break: break-word;
+
+    #textarea-emoji {
+      top: 0;
+    }
+  }
+
+  + .ql-counter {
+    @include theme('color', $theme-text-muted);
+    margin-top: 5px;
+    font-family: $font-family-base;
+    font-size: $font-size-base-px;
+
+    &.characters-exceed {
+      @include theme('color', $theme-error);
+    }
+  }
+
+  .ql-mention-list-container {
+    max-height: $editor-list-container-height;
+    width: $editor-list-container-width;
+    font-family: $font-family-base;
+    box-shadow: $box-shadow;
+    @include border-radius($border-radius);
+    @include theme('background-color', $theme-background-color);
+    @include theme('border', $theme-border-color, true, '1px solid');
+
+    .ql-mention-list-item {
+      line-height: 18px;
+      padding: 0 10px;
+      font-size: $font-size-base-px;
+
+      &.selected {
+        @include theme('background-color', $theme-dropdown-link-hover-bg);
+      }
+
+      .mention-name {
+        max-width: 225px;
+      }
+    }
+  }
+}
+
+.mention {
+  border-radius: 2px;
+  line-height: 23px;
+  padding: 2px 0;
+  background-color: transparent;
+  @include theme('color', $theme-primary-text);
+}
+
+.ql-editor {
+  &.ql-render {
+    overflow-y: hidden;
+    overflow-x: auto !important;
+    padding: 0;
+    height: auto;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    iframe {
+      width: 425px;
+      height: 280px;
+      @include border-radius($border-radius);
+
+      @include media-breakpoint-down(md) {
+        width: 280px;
+      }
+    }
+
+    a {
+      cursor: pointer;
+    }
+  }
+
+  blockquote {
+    &,
+    .ql-snow & {
+      border-left: 3px solid $custom-neutral-4;
+      padding-left: 14px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.ql-tooltip {
+  @include media-breakpoint-down(md) {
+    display: flex;
+    flex-direction: column;;
+    width: 100%;
+
+    input {
+      width: 100% !important;
+    }
+
+    a.ql-action::after {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+.resize-overlay {
+  .ql-stroke {
+    @include theme('stroke', $theme-rich-text-icon, false, '!important');
+  }
+
+  .ql-fill {
+    @include theme('fill', $theme-rich-text-icon, false, '!important');
+  }
+
+  .left-align,
+  .center-align,
+  .right-align {
+    cursor: pointer;
+
+    &:hover {
+      .ql-stroke {
+        @include theme('stroke', $theme-primary, false, '!important');
+      }
+
+      .ql-fill {
+        @include theme('fill', $theme-primary, false, '!important');
+      }
+    }
+  }
+}
+
+.ql-embed-placeholder {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 400px;
+  height: 225px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: default !important;
+  margin-bottom: 1em;
+  padding: 2em;
+
+  &:hover {
+    background-color: #e8e8e8;
+  }
+
+  &::before {
+    content: "<" attr(data-type) ">";
+    font-size: 1.5em;
+    margin-bottom: .5em;
+    text-transform: uppercase;
+  }
+
+  &::after {
+    content: attr(data-src);
+    color: #666;
+  }
+
+  &.active {
+    border-color: #abc9e9;
+    background-color: #d2e5f9;
+  }
+
+  &.selected {
+    color: #fff;
+    border-color: #4185d2;
+    background-color: #5f9de2;
+
+    &::after {
+      color: #fff;
+    }
+  }
+}
+
+.ql-image {
+  vertical-align: bottom;
+  display: inline-block;
+}

@@ -1,0 +1,19 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins/breakpoints";
+
+@import "./scss/richtext";
+@import "quill.mention";
+
+
+.avatar {
+  border-radius: 50%;
+  object-position: top;
+  object-fit: cover;
+}
+
+.avatar-sm {
+  width: 30px;
+  height: 30px;
+}
