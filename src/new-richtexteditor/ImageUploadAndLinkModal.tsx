@@ -6,8 +6,11 @@ import {UploadProgressCallback} from './UploadProgressCallback';
 import {UploadedResponse} from './UploadResponse';
 import {HtmlConverter} from './utils/HtmlConverter';
 import {ImageFieldWithAltText} from './ImageFieldWithAltText';
-import {CommonUtil, FileError, FileInput, Modal} from "@ideascale/ui";
-import Button from "../ui/Button";
+import {Modal} from "../components/Modal.tsx";
+import {CommonUtil} from "./utils/CommonUtil.ts";
+import {Button} from "../components/Button.tsx";
+import {FileInput} from "../components/FileInput.tsx";
+import {FileError} from "../types/FileError.ts";
 
 type ImageUploadModalProps = {
     open: boolean;

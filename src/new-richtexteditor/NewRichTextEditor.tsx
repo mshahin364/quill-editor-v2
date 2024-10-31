@@ -1,4 +1,4 @@
-import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef,} from 'react';
+import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState,} from 'react';
 import ReactQuill from 'react-quill-new';
 import Quill, {type EmitterSource, type Range as RangeStatic} from 'quill';
 import QuillMarkdown from './quill-markdown/QuillMarkdown';
@@ -17,7 +17,7 @@ import {HtmlConverter} from './utils/HtmlConverter';
 import {RichTextEditorHelper} from './utils/RichTextEditorHelper';
 import {UploadProgressCallback} from './UploadProgressCallback';
 import {UploadedResponse} from './UploadResponse';
-// import {ImageUploadAndLinkModal} from './ImageUploadAndLinkModal';
+import {ImageUploadAndLinkModal} from './ImageUploadAndLinkModal';
 import QuillResize from './quill-resize-module/QuillResize';
 import {ImagePasteModule} from './modules/ImagePasteModule';
 import emojiList from './emojiList.json';
@@ -185,7 +185,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         externalFileBasePath = '/a/attachments/embedded-file-url'
     } = props;
     const quillRef = useRef<ReactQuill>(null);
-    // const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false);
+    const [imageUploadModalOpen, setImageUploadModalOpen] = useState(false);
     const insertImageCurrentIndexRef = useRef<number>(0);
     const classificationConfig = useMemo(() => ({
         enabled: classificationProps?.enabled || false,
@@ -206,7 +206,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         }
     }, [classificationConfig]);
 
-    // const toggleImageModal = useCallback(() => setImageUploadModalOpen(prev => !prev), []);
+    const toggleImageModal = useCallback(() => setImageUploadModalOpen(prev => !prev), []);
 
     const getFormats = useMemo(() => {
         const formats = [];
@@ -229,7 +229,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 if (clicked) {
                     const range = quillRef.current?.getEditor().getSelection();
                     insertImageCurrentIndexRef.current = range?.index || 0;
-                    // toggleImageModal();
+                    toggleImageModal();
                 }
             },
             video() {
@@ -267,8 +267,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 resizeModule?.repositionElements();
             }
         };
-    }, []);
-    // }, [toggleImageModal]);
+    }, [toggleImageModal]);
 
     const getMentionConfiguration = useCallback(() => {
         return {
@@ -279,9 +278,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             source: async (searchTerm: string, renderList: Function, _mentionChar: string) => {
                 if (fetchMentionUsers) {
                     const matchedPeople = await fetchMentionUsers(searchTerm);
-                    // renderList(matchedPeople.map(people => ({...people, value: `@${people.username}`})));
                     renderList(matchedPeople.map(people => ({...people, value: `@${people.name}`})));
-                    // renderList(matchedPeople, searchTerm);
 
                     const mentionListContainerElement = document.querySelectorAll('.ql-mention-list-container');
                     if (mentionListContainerElement && mentionListContainerElement.length > 0) {
@@ -301,10 +298,12 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             renderItem: (item: { id: string; value: string; [key: string]: any }) => {
                 const container = document.createElement('div');
                 container.className = 'd-flex align-items-center py-2';
+
                 const img = document.createElement('img');
                 img.src = item.avatar;
                 img.className = 'avatar avatar-sm';
                 img.alt = `${item.username} avatar`;
+
                 const innerContainer = document.createElement('div');
                 innerContainer.className = 'd-flex flex-column justify-content-center align-items-start ms-2';
 
@@ -314,6 +313,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
 
                 const usernameSpan = document.createElement('span');
                 usernameSpan.textContent = `@${item.username}`;
+
                 innerContainer.appendChild(nameSpan);
                 innerContainer.appendChild(usernameSpan);
                 container.appendChild(img);
@@ -713,22 +713,22 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 onChangeSelection={onChangeSelection}
             />
 
-            {/*{*/}
-            {/*    imageUploadModalOpen &&*/}
-            {/*    <ImageUploadAndLinkModal*/}
-            {/*        open={imageUploadModalOpen}*/}
-            {/*        toggle={toggleImageModal}*/}
-            {/*        svgIconPath={''}*/}
-            {/*        existingAttachments={[]}*/}
-            {/*        onSelectAttachment={(attachment, altText) => {*/}
-            {/*            addEmbeddedImage(attachment, altText);*/}
-            {/*        }}*/}
-            {/*        getQuill={() => quillRef.current?.getEditor()}*/}
-            {/*        uploadImage={uploadImage}*/}
-            {/*        externalFileBasePath={externalFileBasePath}*/}
-            {/*        enableExternalImageEmbedOption={false}*/}
-            {/*    />*/}
-            {/*}*/}
+            {
+                imageUploadModalOpen &&
+                <ImageUploadAndLinkModal
+                    open={imageUploadModalOpen}
+                    toggle={toggleImageModal}
+                    svgIconPath={''}
+                    existingAttachments={[]}
+                    onSelectAttachment={(attachment, altText) => {
+                        addEmbeddedImage(attachment, altText);
+                    }}
+                    getQuill={() => quillRef.current?.getEditor()}
+                    uploadImage={uploadImage}
+                    externalFileBasePath={externalFileBasePath}
+                    enableExternalImageEmbedOption={false}
+                />
+            }
         </section>
     );
 }));

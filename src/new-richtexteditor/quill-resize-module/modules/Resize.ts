@@ -1,7 +1,6 @@
 import BaseModule from './BaseModule';
 
 export default class Resize extends BaseModule {
-	blot: any;
 	boxes: any;
 	dragBox: any;
 	dragStartX: any;

@@ -1,5 +1,6 @@
 import {UploadedResponse} from './UploadResponse';
-import {Icon, InfoTip} from "@ideascale/ui";
+import {InfoTip} from "../components/InfoTip.tsx";
+import {Icon} from "../components/Icon.tsx";
 
 
 type ImageFieldWithAltTextCommonProps = {
