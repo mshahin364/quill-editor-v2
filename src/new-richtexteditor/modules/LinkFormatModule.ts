@@ -23,10 +23,10 @@ export class LinkFormatModule {
                 const quillText = this.quill.getText(0, cursorIndex) as string;
                 const words = quillText.split(EMPTY_SPACE_PATTERN).filter((word) => word.length > 0);
                 const lastWord = words[words.length - 1];
-                               if (typeof delta.ops[1].insert === 'string' && (EMPTY_SPACE_PATTERN.test(delta.ops[1].insert) || delta.ops[1].attributes?.link)) {
+                if (typeof delta.ops[1].insert === 'string' && (EMPTY_SPACE_PATTERN.test(delta.ops[1].insert) || delta.ops[1].attributes?.link)) {
                     return;
                 }
-                if (lastWord.startsWith('http://') || lastWord.startsWith('https://')) {
+                if (lastWord?.startsWith('http://') || lastWord?.startsWith('https://')) {
                     //revert inline formats as link formatting does not retain these
                     const revertedFormats = {
                         bold: false,
@@ -34,7 +34,10 @@ export class LinkFormatModule {
                         underline: false,
                         strike: false,
                     };
-                    this.quill.formatText(cursorIndex-lastWord.length, lastWord.length, {...revertedFormats, link: lastWord});
+                    this.quill.formatText(cursorIndex - lastWord.length, lastWord.length, {
+                        ...revertedFormats,
+                        link: lastWord
+                    });
                 }
             }
         }, 0));
