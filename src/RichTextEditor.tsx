@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState} from "react";
+import {useCallback, useRef, useState} from "react";
 // import ReactQuill from "react-quill-new";
 // import svgIconPath from '@ideascale/ui/dist/assets/icons/is-icon-defs.svg';
 // import {HtmlConverter, NewRichTextEditor, RichTextEditorHandler} from "./new-richtexteditor";
@@ -133,6 +133,9 @@ export const RichTextEditor = () => {
         setServerFormat(serverHtml);
         // setRenderedFormat(HtmlConverter.toRenderHtmlFormat(serverHtml));
         tempValueRef.current = serverHtml;
+
+        console.log('getHtmlContent', quillRef.current.getHtmlContent());
+        console.log('getPlainText', quillRef.current.getPlainText());
     };
 
     const tempImageUpload = useCallback(async (data: FormData) => {

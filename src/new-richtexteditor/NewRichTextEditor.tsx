@@ -35,7 +35,62 @@ import {Emoji} from './quill-emoji/EmojiList';
 import {MentionUser} from "./MentionUser.ts";
 import {RichTextEditorHandler} from "./RichTextEditorHandler.ts";
 import {Mention, MentionBlot} from "quill-mention";
-// import {ImageUploadAndLinkModal} from "./ImageUploadAndLinkModal.tsx";
+
+const config = {
+    "enabled": true,
+    "classifications": {
+        "TS": {
+            "locationExtensions": [
+                "FVEY",
+                "NF",
+                "USA",
+                "AUS",
+                "CAN",
+                "GBR",
+                "NZL"
+            ],
+            "sensitiveExtensions": [
+                "SI",
+                "TK"
+            ]
+        },
+        "S": {
+            "locationExtensions": [
+                "FVEY",
+                "NF",
+                "USA",
+                "AUS",
+                "CAN",
+                "GBR",
+                "NZL"
+            ],
+            "sensitiveExtensions": [
+                "SI",
+                "TK"
+            ]
+        },
+        "C": {
+            "locationExtensions": [
+                "FVEY",
+                "NF",
+                "USA",
+                "AUS",
+                "CAN",
+                "GBR",
+                "NZL"
+            ],
+            "sensitiveExtensions": [
+                "SI"
+            ]
+        },
+        "U": {
+            "locationExtensions": [],
+            "sensitiveExtensions": [
+                "FOUO"
+            ]
+        }
+    }
+}
 
 interface UnprivilegedEditor {
     getLength: Quill['getLength'];
@@ -62,7 +117,7 @@ Quill.register('modules/resize', QuillResize, true);
 Quill.register('modules/imagePaste', ImagePasteModule, true);
 Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste, true);
 Quill.register('formats/emoji', EmojiBlot, true);
-Quill.register(`formats/${ClassificationBlot.blotName}`, ClassificationBlot, true);
+// Quill.register(`formats/${ClassificationBlot.blotName}`, ClassificationBlot, true);
 Quill.register('modules/classificationModule', ClassificationModule, true);
 Quill.register('modules/linkFormat', LinkFormatModule, true);
 Quill.register('modules/emoji-shortname', EmojiModule, true);
@@ -179,7 +234,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         onBlur,
         uploadImage,
         // maxFileSize,
-        classificationConfig: classificationProps,
+        classificationConfig: classificationProps = config,
         defaultFileNamePrefix = DEFAULT_FILE_NAME_PREFIX,
         // enableExternalImageEmbedOption = true,
         externalFileBasePath = '/a/attachments/embedded-file-url'
@@ -324,26 +379,28 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
     }, [fetchMentionUsers, maxCharacterLimit]);
 
     const findNextFocusableElement = (quillEditor: HTMLElement, parent: HTMLElement) => {
-        const focusableElementsIdentifier = 'a:not(.ql-tooltip a, [disabled], [data-embeddable]), ' +
-            'button:not(.ql-tooltip button, [disabled]):not([tabindex="-1"]), ' +
-            'input[type=text]:not(.ql-tooltip input,[disabled]), ' +
-            '[tabindex]:not([disabled]):not([tabindex="-1"]), ' +
-            '.ql-editor[contenteditable="true"], ' +
-            '.file-upload-label, ' +
-            'input[type=radio]:not([disabled], .disabled),' +
-            'input[type=checkbox]:not([disabled], .disabled)';
+        if (parent) {
+            const focusableElementsIdentifier = 'a:not(.ql-tooltip a, [disabled], [data-embeddable]), ' +
+                'button:not(.ql-tooltip button, [disabled]):not([tabindex="-1"]), ' +
+                'input[type=text]:not(.ql-tooltip input,[disabled]), ' +
+                '[tabindex]:not([disabled]):not([tabindex="-1"]), ' +
+                '.ql-editor[contenteditable="true"], ' +
+                '.file-upload-label, ' +
+                'input[type=radio]:not([disabled], .disabled),' +
+                'input[type=checkbox]:not([disabled], .disabled)';
 
-        const focusableElements = Array.from(parent.querySelectorAll(focusableElementsIdentifier)).filter((element: any) => {
-            return element.offsetWidth > 0 || element.offsetHeight > 0 || element === quillEditor;
-        });
+            const focusableElements = Array.from(parent.querySelectorAll(focusableElementsIdentifier)).filter((element: any) => {
+                return element.offsetWidth > 0 || element.offsetHeight > 0 || element === quillEditor;
+            });
 
-        const index = focusableElements.indexOf(quillEditor);
-        const hasNextFocusableElement = focusableElements.length > 0 && (index + 1) < focusableElements.length;
+            const index = focusableElements.indexOf(quillEditor);
+            const hasNextFocusableElement = focusableElements.length > 0 && (index + 1) < focusableElements.length;
 
-        if (hasNextFocusableElement) {
-            return focusableElements[index + 1] as HTMLElement;
-        } else if (parent.classList.contains('modal')) {
-            return focusableElements[0] as HTMLElement;
+            if (hasNextFocusableElement) {
+                return focusableElements[index + 1] as HTMLElement;
+            } else if (parent.classList.contains('modal')) {
+                return focusableElements[0] as HTMLElement;
+            }
         }
         return null;
     };
@@ -462,7 +519,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         resize: {
             modules: ['Resize', 'DisplaySize']
         }
-    }), [toolbar, handlers, imagePasteHandler, enableEmojiPicker, offensiveEmojis, characterLeftLabel, maxCharacterLimit, enableAtMention, getMentionConfiguration, focusNextElement]);
+    }), [toolbar, handlers, focusNextElement, imagePasteHandler, enableEmojiPicker, offensiveEmojis, characterLeftLabel, maxCharacterLimit, enableAtMention, getMentionConfiguration, classificationConfig]);
 
     const getDefaultValue = useCallback(() => {
         return HtmlConverter.toRenderHtmlFormat(defaultValue);
@@ -580,7 +637,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 return quillRef.current?.getEditor().getText() || '';
             },
             getHtmlContent() {
-                return (quillRef.current?.getEditor()?.scroll?.domNode as any)?.innerHTML || '';
+                return quillRef.current?.getEditor().root.innerHTML || '';
             }
         };
     }, []);

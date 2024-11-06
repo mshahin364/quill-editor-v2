@@ -1,75 +1,75 @@
-import Quill from 'quill';
+import {Parchment} from 'quill';
 import isNil from 'lodash/isNil';
-
-const Base = Quill.import('blots/embed') as any;
+import Base from 'quill/blots/embed';
 
 export type ClassificationBlotValue = {
-	text: string,
-	classification: string,
-	extensions: string[]
+    text: string,
+    classification: string,
+    extensions: string[]
 }
+
 class ClassificationBlot extends Base {
-	static blotName = 'classifications';
-	static tagName = 'mark';
-	static dataClassification = 'data-classification';
-	static dataClassificationExtension = 'data-classification-extension';
+    static blotName = 'classifications';
+    static tagName = 'mark';
+    static dataClassification = 'data-classification';
+    static dataClassificationExtension = 'data-classification-extension';
 
-	private readonly nodeValue: ClassificationBlotValue;
-	constructor(domNode: Node, value: ClassificationBlotValue) {
-		super(domNode);
-		this.nodeValue = value;
-	}
+    private readonly nodeValue: ClassificationBlotValue;
 
+    constructor(scroll: Parchment.ScrollBlot, domNode: Node, value: ClassificationBlotValue) {
+        super(scroll, domNode);
+        this.nodeValue = value;
+    }
 
-	static create(value: ClassificationBlotValue) {
-		const domNode = super.create();
-		domNode.innerHTML = value.text.replace(/\/\)$/, ')');
-		domNode.setAttribute(ClassificationBlot.dataClassification, value.classification);
-		if (value.extensions?.length > 0) {
-			domNode.setAttribute(ClassificationBlot.dataClassificationExtension, value.extensions.join(','));
-		}
-		domNode.setAttribute('class', `classification-label classification-label-${value.classification.toLocaleLowerCase()} notranslate`);
+    static create(value: ClassificationBlotValue) {
+        const domNode = super.create() as HTMLElement;
+        domNode.innerHTML = value.text.replace(/\/\)$/, ')');
+        domNode.setAttribute(ClassificationBlot.dataClassification, value.classification);
+        if (value.extensions?.length > 0) {
+            domNode.setAttribute(ClassificationBlot.dataClassificationExtension, value.extensions.join(','));
+        }
+        domNode.setAttribute('class', `classification-label classification-label-${value.classification.toLocaleLowerCase()} notranslate`);
 
-		return domNode;
-	}
+        return domNode;
+    }
 
-	static value(domNode: HTMLElement): ClassificationBlotValue | null {
-		const classification = domNode.getAttribute(ClassificationBlot.dataClassification);
-		if (!isNil(classification)) {
-			const text = domNode.innerText?.trim() || '';
-			const extensions = domNode.getAttribute(ClassificationBlot.dataClassificationExtension);
-			return {
-				text,
-				classification: domNode.getAttribute(ClassificationBlot.dataClassification),
-				extensions: !isNil(extensions) ? extensions.split(',') : []
-			} as ClassificationBlotValue;
-		}
-		return null;
-	}
+    static value(domNode: HTMLElement): ClassificationBlotValue | null {
+        const classification = domNode.getAttribute(ClassificationBlot.dataClassification);
+        if (!isNil(classification)) {
+            const text = domNode.innerText?.trim() || '';
+            const extensions = domNode.getAttribute(ClassificationBlot.dataClassificationExtension);
+            return {
+                text,
+                classification: domNode.getAttribute(ClassificationBlot.dataClassification),
+                extensions: !isNil(extensions) ? extensions.split(',') : []
+            } as ClassificationBlotValue;
+        }
+        return null;
+    }
 
-	get text() {
-		return this.nodeValue?.text || '';
-	}
+    get text() {
+        return this.nodeValue?.text || '';
+    }
 
-	public hasPreviousSiblings(): boolean {
-		return !isNil(this.prev);
-	}
+    public hasPreviousSiblings(): boolean {
+        return !isNil(this.prev);
+    }
 
-	public hasNonParagraphParent(): boolean {
-		return this.parent && this.parent.domNode && this.parent.domNode.nodeName !== 'P';
-	}
+    public hasNonParagraphParent(): boolean {
+        return this.parent && this.parent.domNode && this.parent.domNode.nodeName !== 'P';
+    }
 
-	public replaceWithTextValue(): void {
-		this.replaceWith('text', this.text);
-	}
+    public replaceWithTextValue(): void {
+        this.replaceWith('text', this.text);
+    }
 
-	public isValid(): boolean {
-		return !!this.nodeValue;
-	}
+    public isValid(): boolean {
+        return !!this.nodeValue;
+    }
 
-	// quilljs bug, this method should not be called for Embed blot, but it's being called
-	public appendChild(_blot: any): void {
-	}
+    // quilljs bug, this method should not be called for Embed blot, but it's being called
+    public appendChild(_blot: any): void {
+    }
 }
 
-export { ClassificationBlot };
+export {ClassificationBlot};
