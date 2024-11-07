@@ -26,7 +26,7 @@ export class ImagePasteModule {
                 return newDelta;
             } else {
                 const newDelta = new Delta();
-                const insertedImage = ImageBlot.value(node);
+                const insertedImage = ImageBlot.value(node) as unknown as HTMLImageElement;
                 insertedImage.src = HtmlConverter.createExternalImageUrl(src, ImageBlot.basePath);
                 newDelta.insert({image: insertedImage});
                 return newDelta;
