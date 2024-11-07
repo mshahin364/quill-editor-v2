@@ -1,5 +1,8 @@
 import capitalize from 'lodash/capitalize';
 import {RichTextEditorHotKey} from "../RichTextEditorHotKey.ts";
+import {CommonUtil} from "./CommonUtil.ts";
+import {OSTypes} from "../../types/CommonEnums.ts";
+
 export class RichTextEditorHelper {
     static readonly VALID_TITLES = ['bold', 'italic', 'underline', 'strike', 'blockquote', 'link', 'video', 'image'];
 
@@ -51,7 +54,6 @@ export class RichTextEditorHelper {
                         filteredTitle = `Left align (${shortcut})`;
                     }
                 } else if (title === 'indent') {
-                    // tslint:disable-next-line:radix
                     if (parseInt(value) > 0) {
                         shortcut = RichTextEditorHelper.getOperatingSystemBasedShortcut(RichTextEditorHotKey.INCREASE_INDENT);
                         filteredTitle = `Increase indent (${shortcut})`;
@@ -69,9 +71,9 @@ export class RichTextEditorHelper {
     }
 
     static getOperatingSystemBasedShortcut(shortcut: string) {
-        // if (shortcut && CommonUtil.getOS() !== OSTypes.MACOS) {
-        //     return shortcut.replace('cmd', 'ctrl').replace('opt', 'alt');
-        // }
+        if (shortcut && CommonUtil.getOS() !== OSTypes.MACOS) {
+            return shortcut.replace('cmd', 'ctrl').replace('opt', 'alt');
+        }
         return shortcut;
     }
 

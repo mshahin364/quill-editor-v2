@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState,} from 'react';
-import ReactQuill from 'react-quill-new';
 import Quill, {type EmitterSource, type Range as RangeStatic} from 'quill';
-import QuillMarkdown from './quill-markdown/QuillMarkdown';
+import ReactQuill from 'react-quill-new';
+import type DeltaStatic from 'quill-delta';
+import {Mention, MentionBlot} from "quill-mention";
 import QuillImageDropAndPaste, {ImageData} from 'quill-image-drop-and-paste';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
@@ -13,84 +15,28 @@ import {LinkBlot} from './blots/LinkBlot';
 import {MarkdownShortcutsModule} from './modules/MarkdownShortcutsModule';
 import {MaxCharsLimitModule} from './modules/MaxCharsLimitModule';
 import {VideoPasteModule} from './modules/VideoPasteModule';
-import {HtmlConverter} from './utils/HtmlConverter';
-import {RichTextEditorHelper} from './utils/RichTextEditorHelper';
-import {UploadProgressCallback} from './UploadProgressCallback';
-import {UploadedResponse} from './UploadResponse';
-import {ImageUploadAndLinkModal} from './ImageUploadAndLinkModal';
-import QuillResize from './quill-resize-module/QuillResize';
-import {ImagePasteModule} from './modules/ImagePasteModule';
-import emojiList from './emojiList.json';
 import {ClassificationBlot} from './blots/ClassificationBlot';
+import {ImagePasteModule} from './modules/ImagePasteModule';
 import {ClassificationModule} from './modules/ClassificationModule';
-import {RichTextClassificationConfig} from './RichTextClassificationConfig';
-import {ToolbarType} from './ToolbarType';
-import type DeltaStatic from 'quill-delta';
 import EmojiBlot from './blots/EmojiBlot';
 import EmojiModule from './modules/emoji/EmojiModule';
 import ToolbarEmoji from './modules/emoji/EmojiToolbar';
 import TextAreaEmoji from './modules/emoji/TextAreaEmoji';
 import {LinkFormatModule} from './modules/LinkFormatModule';
-import {Emoji} from './quill-emoji/EmojiList';
-import {MentionUser} from "./MentionUser.ts";
-import {RichTextEditorHandler} from "./RichTextEditorHandler.ts";
-import {Mention, MentionBlot} from "quill-mention";
-
-const config = {
-    "enabled": true,
-    "classifications": {
-        "TS": {
-            "locationExtensions": [
-                "FVEY",
-                "NF",
-                "USA",
-                "AUS",
-                "CAN",
-                "GBR",
-                "NZL"
-            ],
-            "sensitiveExtensions": [
-                "SI",
-                "TK"
-            ]
-        },
-        "S": {
-            "locationExtensions": [
-                "FVEY",
-                "NF",
-                "USA",
-                "AUS",
-                "CAN",
-                "GBR",
-                "NZL"
-            ],
-            "sensitiveExtensions": [
-                "SI",
-                "TK"
-            ]
-        },
-        "C": {
-            "locationExtensions": [
-                "FVEY",
-                "NF",
-                "USA",
-                "AUS",
-                "CAN",
-                "GBR",
-                "NZL"
-            ],
-            "sensitiveExtensions": [
-                "SI"
-            ]
-        },
-        "U": {
-            "locationExtensions": [],
-            "sensitiveExtensions": [
-                "FOUO"
-            ]
-        }
-    }
-}
+import QuillMarkdown from './quill-markdown/QuillMarkdown';
+import QuillResize from './quill-resize-module/QuillResize';
+import {UploadedResponse} from './UploadResponse';
+import {UploadProgressCallback} from './UploadProgressCallback';
+import {ImageUploadAndLinkModal} from './ImageUploadAndLinkModal';
+import {HtmlConverter} from './utils/HtmlConverter';
+import {RichTextEditorHelper} from './utils/RichTextEditorHelper';
+import {classificationDefaultConfig} from "./utils/ClassificationConfig.ts";
+import {RichTextClassificationConfig} from './RichTextClassificationConfig';
+import {ToolbarType} from './ToolbarType';
+import {Emoji} from './quill-emoji/Emoji';
+import emojiList from "./quill-emoji/EmojiList";
+import {MentionUser} from "./MentionUser";
+import {RichTextEditorHandler} from "./RichTextEditorHandler";
 
 interface UnprivilegedEditor {
     getLength: Quill['getLength'];
@@ -104,7 +50,6 @@ interface UnprivilegedEditor {
 
 const DEFAULT_FILE_NAME_PREFIX = 'embedded-image';
 
-
 Quill.register('themes/ideascale-snow', IdeascaleSnowTheme, true);
 Quill.register('formats/link', LinkBlot, true);
 Quill.register('blots/block/embed', ImageBlot, true);
@@ -117,7 +62,6 @@ Quill.register('modules/resize', QuillResize, true);
 Quill.register('modules/imagePaste', ImagePasteModule, true);
 Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste, true);
 Quill.register('formats/emoji', EmojiBlot, true);
-// Quill.register(`formats/${ClassificationBlot.blotName}`, ClassificationBlot, true);
 Quill.register('modules/classificationModule', ClassificationModule, true);
 Quill.register('modules/linkFormat', LinkFormatModule, true);
 Quill.register('modules/emoji-shortname', EmojiModule, true);
@@ -221,22 +165,22 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
         offensiveEmojis: offensiveEmojiProps,
         characterLeftLabel = '',
         fetchMentionUsers,
-        // existingAttachments = [],
+        existingAttachments = [],
         defaultValue = '',
         readonly = false,
         tabIndex = 0,
         className,
-        // svgIconPath,
+        svgIconPath,
         debug = false,
         onChange,
         onChangeSelection,
         onFocus,
         onBlur,
         uploadImage,
-        // maxFileSize,
-        classificationConfig: classificationProps = config,
+        maxFileSize,
+        classificationConfig: classificationProps = classificationDefaultConfig,
         defaultFileNamePrefix = DEFAULT_FILE_NAME_PREFIX,
-        // enableExternalImageEmbedOption = true,
+        enableExternalImageEmbedOption = true,
         externalFileBasePath = '/a/attachments/embedded-file-url'
     } = props;
     const quillRef = useRef<ReactQuill>(null);
@@ -329,7 +273,6 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             allowedChars: /^[A-Za-z0-9\s\\._\-$]*$/,
             showDenotationChar: false,
             mentionDenotationChars: ['@'],
-
             source: async (searchTerm: string, renderList: Function, _mentionChar: string) => {
                 if (fetchMentionUsers) {
                     const matchedPeople = await fetchMentionUsers(searchTerm);
@@ -343,7 +286,6 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                     }
                 }
             },
-
             onSelect: (item: any, insertItem: Function) => {
                 const totalCharsLength = (quillRef.current?.editor?.getModule('maxCharsLimit') as MaxCharsLimitModule).totalCharsLength;
                 if (totalCharsLength + item.value.length + 3 < maxCharacterLimit) {
@@ -764,7 +706,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 defaultValue={getDefaultValue()}
                 readOnly={readonly}
                 tabIndex={tabIndex}
-                onChange={(value, delta, source, editor) => onChangeEvent(value, delta, source, editor)}
+                onChange={onChangeEvent}
                 onBlur={onBlur}
                 onFocus={onFocus}
                 onChangeSelection={onChangeSelection}
@@ -775,15 +717,16 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
                 <ImageUploadAndLinkModal
                     open={imageUploadModalOpen}
                     toggle={toggleImageModal}
-                    svgIconPath={''}
-                    existingAttachments={[]}
+                    svgIconPath={svgIconPath}
+                    existingAttachments={existingAttachments}
                     onSelectAttachment={(attachment, altText) => {
                         addEmbeddedImage(attachment, altText);
                     }}
                     getQuill={() => quillRef.current?.getEditor()}
                     uploadImage={uploadImage}
+                    maxFileSize={maxFileSize}
                     externalFileBasePath={externalFileBasePath}
-                    enableExternalImageEmbedOption={false}
+                    enableExternalImageEmbedOption={enableExternalImageEmbedOption}
                 />
             }
         </section>

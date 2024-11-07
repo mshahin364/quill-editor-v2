@@ -1,7 +1,6 @@
 import {Quill} from 'react-quill-new';
 
 const Link = Quill.import('formats/link') as any;
-
 const VALID_URL_REGEX = /^(https|http|ftp):\/\/.*/i;
 
 export class LinkBlot extends Link {

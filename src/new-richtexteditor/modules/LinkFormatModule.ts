@@ -1,6 +1,6 @@
 import Quill from 'quill';
-import VideoUtils from '../hyperlink-renderer/VideoUtils';
 import type DeltaStatic from 'quill-delta';
+import VideoUtils from '../hyperlink-renderer/VideoUtils';
 import {CommonUtil} from "../utils/CommonUtil.ts";
 
 const quillDelta = Quill.import('delta');

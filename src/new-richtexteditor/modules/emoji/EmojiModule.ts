@@ -1,12 +1,8 @@
-// import Quill, {RangeStatic, Sources} from 'quill';
-// import Quill, { type EmitterSource, type Range as RangeStatic } from 'quill';
-import { type EmitterSource, type Range as RangeStatic } from 'quill';
+import {type EmitterSource, type Range as RangeStatic} from 'quill';
 import Fuse, {FuseResult} from 'fuse.js';
 import emojiList, {Emoji} from '../../quill-emoji/EmojiList';
 import type DeltaStatic from 'quill-delta';
-import  Module from 'quill/core/module';
-
-// const Module = Quill.import('core/module');
+import Module from 'quill/core/module';
 
 class EmojiModule extends Module {
     emojiList: Emoji[];
@@ -93,7 +89,7 @@ class EmojiModule extends Module {
 
         this.atIndex = range.index;
 
-        if(atSignBounds) {
+        if (atSignBounds) {
             const paletteMaxPos = atSignBounds.left + 250;
             if (paletteMaxPos > this.quill.container.offsetWidth) {
                 this.container.style.left = (atSignBounds.left - 250) + 'px';
@@ -131,33 +127,8 @@ class EmojiModule extends Module {
     }
 
     onTextChangedHandler(delta: DeltaStatic, _oldContents: DeltaStatic, _source: EmitterSource) {
-        // const text = this.quill.getText();
-        // const lastWhitespaceIndex = text.lastIndexOf(' ', this.quill?.getSelection()?.index);
-        // console.log("=>(EmojiModule.ts:137) lastWhitespaceIndex", lastWhitespaceIndex);
-        // const findColon = text.lastIndexOf(':', this.quill?.getSelection()?.index);
-        // console.log("=>(EmojiModule.ts:138) findColon", findColon);
-        // const findSpace2 = text.charAt(findColon -2);
-        // console.log("=>(EmojiModule.ts:140) findSpace2", findSpace2);
-        // const findSpace = text.charAt(findColon -1);
-        // console.log("=>(EmojiModule.ts:140) findSpace", findSpace);
-        //     const continueExecution = findColon > -1 && findSpace === ' ';
-        // if(!continueExecution && findColon !== 0) {
-        //     return;
-        // }
-
-
-        // const text = this.quill.getText();
-        // const findColon = text.lastIndexOf(':', this.quill?.getSelection()?.index);
-        // // const lastWhitespaceIndex = text.lastIndexOf(' ', this.quill?.getSelection()?.index);
-        // const findSpace = text.charAt(findColon -1);
-        // const continueExecution = findColon > -1 && findSpace === ' ';
-        // if(!continueExecution && findColon !== 0) {
-        //     return;
-        // }
-
-
         const sel = this.quill?.getSelection()?.index;
-        if(this.atIndex !== null && sel !== undefined) {
+        if (this.atIndex !== null && sel !== undefined) {
             if (this.atIndex >= sel) { // Deleted the at character
                 return this.close();
             }
@@ -193,7 +164,7 @@ class EmojiModule extends Module {
         }
 
         const emojis = emojiResults.map(result => result.item);
-        if(emojis.length > 0) {
+        if (emojis.length > 0) {
             this.open = true;
             this.renderCompletions(emojis, delta);
         } else {
@@ -292,43 +263,31 @@ class EmojiModule extends Module {
 
         //Escape key to close emoji palette
         this.container.addEventListener('keydown', (event: KeyboardEvent) => {
-            if(event.key === "Escape") {
-                // this.open = false;
-                // // this.close();
-                // // this.atIndex = null;
+            if (event.key === "Escape") {
                 this.quill.focus()
                 this.container.style.display = 'none';
             }
 
         })
-
-
     }
 
     close(value?: Emoji | null, trailingDelete = 0) {
         this.quill.enable();
         this.container.style.display = 'none';
         while (this.container.firstChild) this.container.removeChild(this.container.firstChild);
-        // this.quill.off('selection-change', this.onSelectionChange);
-        // this.quill.off('text-change', this.onTextChange);
-        // if (value &&  this.atIndex !== null && this.atIndex >= 0) {
         if (value) {
             this.quill.deleteText(this.atIndex!, this.query.length + 1 + trailingDelete, 'user');
             this.quill.insertEmbed(this.atIndex!, 'emoji', value, 'user');
-
             this.quill.off('selection-change', this.onSelectionChange);
             this.quill.off('text-change', this.onTextChange);
             this.open = false;
 
-
             setTimeout(() => {
-
                 this.quill.setSelection(this.atIndex! + 1);
             }, 0);
             return;
         }
         this.quill.focus();
-        // this.open = false;
         if (this.onClose) {
             this.onClose(value);
             return;

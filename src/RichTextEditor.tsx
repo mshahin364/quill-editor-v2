@@ -134,8 +134,8 @@ export const RichTextEditor = () => {
         // setRenderedFormat(HtmlConverter.toRenderHtmlFormat(serverHtml));
         tempValueRef.current = serverHtml;
 
-        console.log('getHtmlContent', quillRef.current.getHtmlContent());
-        console.log('getPlainText', quillRef.current.getPlainText());
+        console.log('getHtmlContent', quillRef.current?.getHtmlContent());
+        console.log('getPlainText', quillRef.current?.getPlainText());
     };
 
     const tempImageUpload = useCallback(async (data: FormData) => {

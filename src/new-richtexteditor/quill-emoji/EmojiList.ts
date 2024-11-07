@@ -1,11 +1,4 @@
-export type Emoji = {
-    name: string,
-    unicode: string,
-    shortname: string,
-    code_decimal: string,
-    category: string,
-    emoji_order: string
-}
+import {Emoji} from "./Emoji.ts";
 
 const emojiList: Emoji[] = [
     {
@@ -9603,7 +9596,6 @@ const emojiList: Emoji[] = [
     },
 
 
-
     {
         "name": "flag-im",
         "unicode": "1f1ee-1f1f2",
@@ -10324,7 +10316,6 @@ const emojiList: Emoji[] = [
         "category": "f",
         "emoji_order": "2385"
     },
-
 
 
     {

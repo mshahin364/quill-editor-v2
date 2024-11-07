@@ -1,7 +1,7 @@
 import Quill from 'quill';
 import Fuse from 'fuse.js';
-import emojiList from '../../quill-emoji/EmojiList';
 import type DeltaStatic from 'quill-delta';
+import emojiList from '../../quill-emoji/EmojiList';
 
 const Module = Quill.import('core/module');
 
@@ -108,7 +108,7 @@ function fn_showEmojiPalette(quill: any) {
         document.getElementsByTagName('body')[0].appendChild(closeDiv);
     } else {
         const emojiCloseDiv = document.getElementById('emoji-close-div');
-        if(emojiCloseDiv){
+        if (emojiCloseDiv) {
             emojiCloseDiv.style.display = 'block';
         }
     }
@@ -155,14 +155,14 @@ function fn_emojiElementsToPanel(type: any, panel: any, quill: Quill) {
     };
     const fuse = new Fuse(emojiList, fuseOptions);
     const result = fuse.search(type);
-    result.sort( (a, b) => {
+    result.sort((a, b) => {
         return Number(a.item.emoji_order) - Number(b.item.emoji_order);
     });
 
     quill.focus();
     const range = quill.getSelection();
 
-    result.forEach( (fuseEmoji) => {
+    result.forEach((fuseEmoji) => {
         const emoji = fuseEmoji.item;
         const span = document.createElement('span');
         const t = document.createTextNode(emoji.shortname);
@@ -179,7 +179,7 @@ function fn_emojiElementsToPanel(type: any, panel: any, quill: Quill) {
         if (customButton) {
             customButton.addEventListener('click', () => {
                 makeElement('span', {className: 'ico', innerHTML: '' + emoji.code_decimal + ' '});
-                if(range){
+                if (range) {
                     quill.insertEmbed(range.index, 'emoji', emoji, 'user');
                     setTimeout(() => range && quill.setSelection({index: range.index + 1, length: range.length}), 0);
                 }

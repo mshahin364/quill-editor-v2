@@ -1,4 +1,5 @@
-import emojiList, {Emoji} from './EmojiList';
+import emojiList from './EmojiList';
+import {Emoji} from "./Emoji";
 
 const emojiMap: {
     [key: string]: Emoji;

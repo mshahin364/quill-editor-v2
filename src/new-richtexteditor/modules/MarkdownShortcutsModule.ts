@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Quill from 'quill';
 
 const IMAGE_PATTERN = /!\[(.*?)]\((.+?)\)/g;
@@ -26,7 +25,7 @@ export class MarkdownShortcutsModule {
             {
                 name: 'image',
                 pattern: IMAGE_PATTERN,
-                action: ({ text, selection, pattern }: ActionParams) => {
+                action: ({text, selection, pattern}: ActionParams) => {
                     const matchedAltText = (text.match(/\[(.*?)]/) || [])[0] || '';
                     const altText = matchedAltText.slice(1, matchedAltText.length - 1);
                     const startIndex = text.search(pattern);
@@ -36,7 +35,10 @@ export class MarkdownShortcutsModule {
                     if (startIndex !== -1) {
                         setTimeout(() => {
                             this.quill.deleteText(start, matchedText.length);
-                            this.quill.insertEmbed(start, 'image', { src: hrefLink.slice(1, hrefLink.length - 1), alt: altText });
+                            this.quill.insertEmbed(start, 'image', {
+                                src: hrefLink.slice(1, hrefLink.length - 1),
+                                alt: altText
+                            });
                         }, 0);
                     }
                 }
@@ -44,7 +46,7 @@ export class MarkdownShortcutsModule {
             {
                 name: 'link',
                 pattern: LINK_PATTERN,
-                action: ({ text, selection, pattern }: ActionParams) => {
+                action: ({text, selection, pattern}: ActionParams) => {
                     const startIndex = text.search(pattern);
                     const matchedText = (text.match(pattern) || [])[0] || '';
                     const hrefText = (text.match(/\[(.*?)]/g) || [])[0] || '';
@@ -62,15 +64,15 @@ export class MarkdownShortcutsModule {
 
         this.quill.on('text-change', (delta) => {
             if (delta && delta.ops) {
-				for (const op of delta.ops) {
-					if (Object.prototype.hasOwnProperty.call(op, 'insert')) {
-						if (op.insert === ' ') {
-							this.onSpace();
-						} else if (op.insert === '\n') {
-							this.onEnter();
-						}
-					}
-				}
+                for (const op of delta.ops) {
+                    if (Object.prototype.hasOwnProperty.call(op, 'insert')) {
+                        if (op.insert === ' ') {
+                            this.onSpace();
+                        } else if (op.insert === '\n') {
+                            this.onEnter();
+                        }
+                    }
+                }
             }
         });
     }
@@ -94,7 +96,7 @@ export class MarkdownShortcutsModule {
                 for (const match of this.matches) {
                     const matchedText = text.match(match.pattern);
                     if (matchedText) {
-                        match.action({ text, selection, pattern: match.pattern, lineStart });
+                        match.action({text, selection, pattern: match.pattern, lineStart});
                         return;
                     }
                 }
@@ -114,7 +116,7 @@ export class MarkdownShortcutsModule {
                 for (const match of this.matches) {
                     const matchedText = text.match(match.pattern);
                     if (matchedText) {
-                        match.action({ text, selection, pattern: match.pattern, lineStart });
+                        match.action({text, selection, pattern: match.pattern, lineStart});
                         return;
                     }
                 }

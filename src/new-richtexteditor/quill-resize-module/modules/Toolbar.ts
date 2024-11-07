@@ -1,8 +1,7 @@
 import Quill from 'quill';
-
-const Parchment = Quill.import('parchment');
 import BaseModule from './BaseModule';
 
+const Parchment = Quill.import('parchment');
 const ClassAttributor = Parchment.ClassAttributor;
 const ImageFormatClass = new ClassAttributor('imagestyle', 'ql-resize-style');
 

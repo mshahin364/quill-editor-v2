@@ -1,8 +1,5 @@
 import emojiMap from "../quill-emoji/EmojiMap";
-// import Quill from 'quill';
 import Base from 'quill/blots/embed';
-
-// const Base = Quill.import('blots/embed');
 
 class EmojiBlot extends Base {
     static emojiClass: string;
@@ -37,6 +34,7 @@ class EmojiBlot extends Base {
         emojiSpan.innerText = String.fromCodePoint(...EmojiBlot.parseUnicode(value.unicode));
         node.appendChild(emojiSpan);
     }
+
     static parseUnicode(unicode: string) {
         return unicode.split('-').map(str => parseInt(str, 16));
     }

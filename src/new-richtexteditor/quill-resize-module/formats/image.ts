@@ -1,6 +1,4 @@
-// import Quill from 'quill';
 import BaseImageFormat from 'quill/formats/image';
-// const BaseImageFormat = Quill.import('formats/image');
 
 const ATTRIBUTES = ['alt', 'height', 'width', 'style', 'data-size'];
 

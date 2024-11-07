@@ -14,14 +14,9 @@ export class ClassificationModule {
         this.classificationConfig = options.configData;
 
         this.quill.once('text-change', _delta => {
-            // @ts-ignore
-            // const invalidClassifications = ((this.quill.scroll.descendants && this.quill.scroll.descendants(ClassificationBlot)) || [])
-            //     .filter((classificationBlot: ClassificationBlot) => !classificationBlot.isValid());
-
             const invalidClassifications = ((this.quill.scroll.descendants && this.quill.scroll.descendants(ClassificationBlot)) || [])
                 .filter((classificationBlot) => !(classificationBlot as unknown as ClassificationBlot).isValid());
             if (invalidClassifications.length > 0) {
-                // @ts-ignore
                 invalidClassifications.forEach((invalidClassification: ClassificationBlot) => invalidClassification.remove());
             }
         });
@@ -33,7 +28,6 @@ export class ClassificationModule {
                 }
             } else {
                 setTimeout(() => {
-                    // @ts-ignore
                     const existingClassifications = ((this.quill.scroll.descendants && this.quill.scroll.descendants(ClassificationBlot)) || []) as ClassificationBlot[];
                     existingClassifications.forEach((classification) => classification.replaceWithTextValue());
                 });
@@ -42,7 +36,6 @@ export class ClassificationModule {
     }
 
     public hasInvalidClassificationInputs() {
-        // @ts-ignore
         const existingClassifications = ((this.quill.scroll.descendants && this.quill.scroll.descendants(ClassificationBlot)) || []) as ClassificationBlot[];
         const classificationParser = new ClassificationTextParser(this.classificationConfig);
 
@@ -54,7 +47,6 @@ export class ClassificationModule {
     }
 
     public applyClassifications() {
-        // @ts-ignore
         const existingClassifications = ((this.quill.scroll.descendants && this.quill.scroll.descendants(ClassificationBlot)) || []) as ClassificationBlot[];
         const classificationParser = new ClassificationTextParser(this.classificationConfig);
 
@@ -66,7 +58,6 @@ export class ClassificationModule {
         if (invalidClassifications.length > 0) {
             invalidClassifications.forEach((classification) => classification.replaceWithTextValue());
         } else {
-            // @ts-ignore
             const existingText = (this.quill.scroll && this.quill.scroll.domNode && this.quill.scroll.domNode.innerHTML) || '';
             if (CommonUtil.hasRegexMatch(classificationParser.getClassificationInputRegex(), existingText)) {
                 const matchedLines = this.quill.getLines()

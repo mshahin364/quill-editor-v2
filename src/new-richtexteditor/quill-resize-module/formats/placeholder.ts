@@ -1,12 +1,7 @@
-import {Parchment} from 'quill';
+import Quill, {Parchment} from 'quill';
 import Embed from 'quill/blots/embed';
 import Container from 'quill/blots/container';
 import Scroll from 'quill/blots/scroll';
-
-import Quill from 'quill';
-
-// const Container = Quill.import('blots/container');
-// const Scroll = Quill.import('blots/scroll');
 
 const ATTRIBUTES = [
     'data-embed-source',
@@ -15,8 +10,6 @@ const ATTRIBUTES = [
     'data-size',
     'style'
 ];
-
-// const Parchment = Quill.import('parchment');
 
 class EmbedPlaceholder extends Embed {
     static create(value: any) {
@@ -115,18 +108,14 @@ EmbedPlaceholder.scope = Parchment.Scope.INLINE_BLOT;
 Container?.allowedChildren?.push(EmbedPlaceholder);
 Scroll.allowedChildren.push(EmbedPlaceholder as any);
 
-// tslint:disable-next-line:max-classes-per-file
 class TagPlaceholder extends EmbedPlaceholder {
 }
 
-// @ts-ignore
 TagPlaceholder.tagName = ['video', 'iframe'];
 
-// tslint:disable-next-line:max-classes-per-file
 class ClassNamePlaceholder extends EmbedPlaceholder {
 }
 
-// @ts-ignore
 ClassNamePlaceholder.className = 'ql-embed-placeholder';
 
 const tagReg = /<([\w-]+)((?:\s+[\w-:.]*(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^>\s]+))?)*)\s*>([^<]*?)<\/\1>/g;
@@ -136,7 +125,6 @@ function convertPlaceholderHTML(html = '') {
     if (!html) return '';
 
     const matchReg = new RegExp(
-        // @ts-ignore
         `class\\s*=\\s*(?:"[^"]*\\b(${ClassNamePlaceholder.className})\\b[^"]*"|'[^']*\\b(${ClassNamePlaceholder.className})\\b[^']*')`
     );
     return html.replace(tagReg, (m, tag, attrs = '') => {
@@ -192,7 +180,6 @@ export default function register(formats = [TagPlaceholder]) {
     formats.forEach((fmt: any) => {
         Quill.register(fmt, true);
         fmt.tagName = EmbedPlaceholder.tagName;
-        // @ts-ignore
         fmt.className = ClassNamePlaceholder.className;
     });
 }
