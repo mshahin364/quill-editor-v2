@@ -1,7 +1,5 @@
-import {Quill} from 'react-quill-new';
+import BaseImageFormat from 'quill/formats/image';
 import {HtmlConverter} from '../utils/HtmlConverter';
-
-const Image = Quill.import('formats/image') as any;
 
 const ImageFormatAttributesList = [
     'alt',
@@ -12,10 +10,11 @@ const ImageFormatAttributesList = [
     'data-align'
 ];
 
-class ImageBlot extends Image {
+class ImageBlot extends BaseImageFormat {
     static basePath = '';
+
     static create(value: any) {
-        const node = super.create();
+        const node = super.create(value);
         node.setAttribute('class', 'ql-image');
         node.setAttribute('loading', 'lazy');
 
@@ -48,14 +47,14 @@ class ImageBlot extends Image {
     }
 
     static value(node: any) {
-        return {
+        return JSON.stringify({
             alt: node.getAttribute('alt'),
             src: node.getAttribute('src'),
             width: node.getAttribute('width'),
             height: node.getAttribute('height'),
             class: node.getAttribute('class'),
             'data-size': node.getAttribute('data-size'),
-        };
+        });
     }
 
     static formats(domNode: any) {

@@ -1,6 +1,5 @@
-import {Quill} from 'react-quill-new';
+import Link from 'quill/formats/link';
 
-const Link = Quill.import('formats/link') as any;
 const VALID_URL_REGEX = /^(https|http|ftp):\/\/.*/i;
 
 export class LinkBlot extends Link {
@@ -8,7 +7,7 @@ export class LinkBlot extends Link {
     static readonly SANITIZED_URL = 'about:blank';
 
     static create(value: string) {
-        let node = super.create();
+        let node = super.create(value);
         node.setAttribute('href', this.sanitize(value));
         node.setAttribute('rel', 'noopener noreferrer');
         node.setAttribute('data-embeddable', 'false');

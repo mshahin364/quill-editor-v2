@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {forwardRef, memo, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState,} from 'react';
 import Quill, {type EmitterSource, type Range as RangeStatic} from 'quill';
-import ReactQuill from 'react-quill-new';
+import ReactQuill from './ReactQuill';
 import type DeltaStatic from 'quill-delta';
 import {Mention, MentionBlot} from "quill-mention";
 import QuillImageDropAndPaste, {ImageData} from 'quill-image-drop-and-paste';
@@ -52,6 +51,8 @@ const DEFAULT_FILE_NAME_PREFIX = 'embedded-image';
 
 Quill.register('themes/ideascale-snow', IdeascaleSnowTheme, true);
 Quill.register('formats/link', LinkBlot, true);
+Quill.register('formats/emoji', EmojiBlot, true);
+Quill.register(`formats/${ClassificationBlot.blotName}`, ClassificationBlot, true);
 Quill.register('blots/block/embed', ImageBlot, true);
 Quill.register('blots/block/embed', VideoBlot, true);
 Quill.register({'modules/counter': RemainingCharactersModule}, true);
@@ -61,7 +62,6 @@ Quill.register('modules/videoPaste', VideoPasteModule, true);
 Quill.register('modules/resize', QuillResize, true);
 Quill.register('modules/imagePaste', ImagePasteModule, true);
 Quill.register('modules/imageDropAndPaste', QuillImageDropAndPaste, true);
-Quill.register('formats/emoji', EmojiBlot, true);
 Quill.register('modules/classificationModule', ClassificationModule, true);
 Quill.register('modules/linkFormat', LinkFormatModule, true);
 Quill.register('modules/emoji-shortname', EmojiModule, true);

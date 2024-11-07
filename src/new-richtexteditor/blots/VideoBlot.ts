@@ -1,11 +1,9 @@
-import {Quill} from 'react-quill-new';
+import Video from "quill/formats/video";
 import VideoUtils from '../hyperlink-renderer/VideoUtils';
-
-const Video = Quill.import('formats/video')  as any;
 
 class VideoBlot extends Video {
     static create(value: any) {
-        const node = super.create();
+        const node = super.create(value);
         const embedUrl = this.extractVideoUrl(value);
         node.setAttribute('src', embedUrl);
         node.setAttribute('frameborder', '0');
@@ -31,7 +29,7 @@ class VideoBlot extends Video {
             if (value) {
                 this.domNode.setAttribute(name, value);
             } else {
-                this.domNode.removeAttribute(name, value);
+                this.domNode.removeAttribute(name);
             }
         } else {
             super.format(name, value);
