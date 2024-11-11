@@ -12,6 +12,9 @@ import {HtmlConverter} from "./new-richtexteditor";
 // import {HtmlUtils} from "@ideascale/commons";
 // import 'react-quill-new/dist/quill.snow.css';
 
+// const initialContent = `<p><span class="mention" data-index="3" data-denotation-char="" data-id="4748" data-value="@jony.rahman"><span contenteditable="false">@jony.rahman</span></span> fskfskfsjkf sdkfjsdkf sdkfsdkf <span class="ql-emojiblot" data-name="sweat_smile"><span contenteditable="false"><span class="ap ap-sweat_smile">😅</span></span></span> fskfksf sfsjdkf sdkfjsdkf sf <a href="https://ideas.ideascale.me/c/ideas/landing?submission-form=open" rel="noopener noreferrer" target="_blank" data-embeddable="false">sdfksfj</a>. f fdskfsdk</p><p><img loading="lazy" src="/a/community-id/1/attachments/embedded-files/Screenshot-2024-11-06-at-3.12.01PM-7534f7/png" class="" width="239"></p>`
+const initialContent = `<p><span class="mention" data-index="3" data-denotation-char="" data-id="4748" data-value="@jony.rahman"><span contenteditable="false">@jony.rahman</span></span> fskfskfsjkf sdkfjsdkf sdkfsdkf <span class="ql-emojiblot" data-name="sweat_smile"><span contenteditable="false"><span class="ap ap-sweat_smile">😅</span></span></span> fskfksf sfsjdkf sdkfjsdkf sf <a href="https://ideas.ideascale.me/c/ideas/landing?submission-form=open" rel="noopener noreferrer" target="_blank" data-embeddable="false">sdfksfj</a>. f fdskfsdk</p><p><img loading="lazy" src="https://user-images.githubusercontent.com/96095448/221162134-cb55a282-3378-4749-a80d-bdd40221cf84.png" class="" width="450"></p><p><img loading="lazy" src="https://user-images.githubusercontent.com/96095448/221162134-cb55a282-3378-4749-a80d-bdd40221cf84.png" class="" width="200"></p>`
+
 const ALL_SUGGESTED_PEOPLES = [
     {
         'id': 302252,
@@ -187,7 +190,7 @@ export const RichTextEditor = () => {
                 fetchMentionUsers={suggestPeople}
                 onChange={onChange}
                 existingAttachments={[]}
-                defaultValue={''}
+                defaultValue={initialContent}
                 ref={quillRef}
                 uploadImage={tempImageUpload}
             />

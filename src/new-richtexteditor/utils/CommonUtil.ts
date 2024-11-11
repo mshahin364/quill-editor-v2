@@ -1,4 +1,5 @@
 import {OSTypes} from "../../types/CommonEnums.ts";
+import {isValidUrl} from "../blots/LinkBlot.ts";
 
 export class CommonUtil {
     static uuid = (): string => {
@@ -23,10 +24,12 @@ export class CommonUtil {
     static isSameOrigin(baseUrl: string, compareUrl: string) {
         const parseURL = (sourceUrl: string) => {
             let url = null;
-            try {
-                url = new URL(sourceUrl);
-            } catch (error) {
-                console.error(error);
+            if (isValidUrl(sourceUrl)) {
+                try {
+                    url = new URL(sourceUrl);
+                } catch (error) {
+                    console.error(error);
+                }
             }
             return url;
         };

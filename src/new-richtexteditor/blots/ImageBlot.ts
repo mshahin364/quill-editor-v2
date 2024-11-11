@@ -1,7 +1,5 @@
-import {Quill} from 'react-quill-new';
+import BaseImageFormat from 'quill/blots/embed';
 import {HtmlConverter} from '../utils/HtmlConverter';
-
-const Image = Quill.import('formats/image') as any;
 
 const ImageFormatAttributesList = [
     'alt',
@@ -12,10 +10,13 @@ const ImageFormatAttributesList = [
     'data-align'
 ];
 
-class ImageBlot extends Image {
+class ImageBlot extends BaseImageFormat {
     static basePath = '';
-    static create(value: any) {
-        const node = super.create();
+    static blotName = 'image';
+    static tagName = 'img';
+
+    static create(value: HTMLImageElement) {
+        const node = super.create() as HTMLImageElement;
         node.setAttribute('class', 'ql-image');
         node.setAttribute('loading', 'lazy');
 
@@ -27,16 +28,16 @@ class ImageBlot extends Image {
             node.setAttribute('alt', value.alt || 'Image file');
             node.setAttribute('src', HtmlConverter.createExternalImageUrl(value.src, this.basePath));
             if (value?.width) {
-                node.setAttribute('width', value.width);
+                node.setAttribute('width', value.width.toString());
             } else {
                 node.setAttribute('width', '300');
             }
 
             if (value?.height) {
-                node.setAttribute('height', value.height);
+                node.setAttribute('height', value.height.toString());
             }
-            if (value?.class) {
-                const classes = value.class.split(/ /);
+            if (value?.className) {
+                const classes = value.className.split(/ /);
                 classes.forEach((cls: string) => {
                     if (!node.classList.contains(cls)) {
                         node.classList.add(cls);
@@ -55,7 +56,7 @@ class ImageBlot extends Image {
             height: node.getAttribute('height'),
             class: node.getAttribute('class'),
             'data-size': node.getAttribute('data-size'),
-        };
+        } as any;
     }
 
     static formats(domNode: any) {
@@ -65,18 +66,6 @@ class ImageBlot extends Image {
             }
             return formats;
         }, {});
-    }
-
-    format(name: any, value: any) {
-        if (ImageFormatAttributesList.indexOf(name) > -1) {
-            if (value) {
-                this.domNode.setAttribute(name, value);
-            } else {
-                this.domNode.removeAttribute(name);
-            }
-        } else {
-            super.format(name, value);
-        }
     }
 }
 
