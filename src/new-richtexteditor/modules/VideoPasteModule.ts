@@ -18,7 +18,6 @@ export class VideoPasteModule {
 
         this.quill.root.addEventListener('paste', function (event: any) {
             event.preventDefault();
-
             // Get the pasted text from the clipboard
             // @ts-ignore
             const clipboardData = event.clipboardData || window.clipboardData;
