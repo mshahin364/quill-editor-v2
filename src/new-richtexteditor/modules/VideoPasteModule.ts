@@ -1,7 +1,7 @@
 import Quill from 'quill';
 import type DeltaStatic from 'quill-delta';
 import VideoUtils from '../hyperlink-renderer/VideoUtils';
-import {CommonUtil} from "../utils/CommonUtil.ts";
+import {CommonUtil} from "../utils/CommonUtil";
 
 const DeltaL = Quill.import('delta');
 
@@ -15,6 +15,22 @@ export class VideoPasteModule {
         this.options = options;
         this.handlePasteBind = this.handlePaste.bind(this);
         this.quill.clipboard.addMatcher(Node.TEXT_NODE, this.handlePasteBind);
+
+        this.quill.root.addEventListener('paste', function (event: any) {
+            event.preventDefault();
+
+            // Get the pasted text from the clipboard
+            // @ts-ignore
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const range = quill.getSelection();
+            const pastedText = clipboardData.getData('text');
+            if (range && VideoUtils.isValidVideoUrl(pastedText)) {
+                const startingIndex = range.index - pastedText.length;
+                quill.deleteText(startingIndex, pastedText.length);
+                quill.insertEmbed(startingIndex, 'video', pastedText, 'silent');
+                quill.setSelection(startingIndex + 1, 'silent');
+            }
+        });
     }
 
     handlePaste(node: any, delta: DeltaStatic) {
