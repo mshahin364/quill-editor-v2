@@ -68,6 +68,7 @@ Quill.register('modules/emoji-shortname', EmojiModule, true);
 Quill.register('modules/emoji-toolbar', ToolbarEmoji, true);
 Quill.register('modules/emoji-textarea', TextAreaEmoji, true);
 Quill.register({"blots/mention": MentionBlot, "modules/mention": Mention});
+Quill.register(`formats/${ClassificationBlot.blotName}`, ClassificationBlot, true);
 
 const TOOLBAR_CONFIGURATIONS = {
     default: [
