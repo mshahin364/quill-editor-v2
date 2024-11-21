@@ -277,7 +277,7 @@ export const NewRichTextEditor = memo(forwardRef((props: NewRichTextEditorProps,
             source: async (searchTerm: string, renderList: Function, _mentionChar: string) => {
                 if (fetchMentionUsers) {
                     const matchedPeople = await fetchMentionUsers(searchTerm);
-                    renderList(matchedPeople.map(people => ({...people, value: `@${people.name}`})));
+                    renderList(matchedPeople.map(people => ({...people, value: `@${people.username}`})));
 
                     const mentionListContainerElement = document.querySelectorAll('.ql-mention-list-container');
                     if (mentionListContainerElement && mentionListContainerElement.length > 0) {
